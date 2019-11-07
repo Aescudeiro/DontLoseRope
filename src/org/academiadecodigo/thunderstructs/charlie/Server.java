@@ -3,6 +3,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +28,7 @@ public class Server {
         try {
 
             Server server = new Server(new ServerSocket(8080));
+            server.games = new HashSet<>();
             Game g1 = new Game();
             Game g2 = new Game();
 

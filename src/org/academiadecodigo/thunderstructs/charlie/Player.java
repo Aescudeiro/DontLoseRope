@@ -17,7 +17,6 @@ public class Player implements Runnable {
 
         this.playerSocket = playerSocket;
 
-
     }
 
     @Override
@@ -35,4 +34,6 @@ public class Player implements Runnable {
     public String getName() {
         return name;
     }
+
+
 }
