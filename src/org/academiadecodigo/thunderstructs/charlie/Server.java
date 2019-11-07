@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +13,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private static Map<String, Player> players = new HashMap<>();
-    private static Set<Game> games = new HashSet<>();
+    private static Map<Integer, Game> games = new HashMap<>();
 
     private Server(ServerSocket serverSocket) {
 
@@ -31,8 +29,8 @@ public class Server {
             Game g1 = new Game();
             Game g2 = new Game();
 
-            games.add(g1);
-            games.add(g2);
+            games.put(1, g1);
+            games.put(2, g2);
             server.init();
 
         } catch (IOException e) {
@@ -69,7 +67,7 @@ public class Server {
         return players;
     }
 
-    public static Set<Game> getGames() {
+    public static Map<Integer, Game> getGames() {
         return games;
     }
 }
