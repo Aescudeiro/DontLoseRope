@@ -24,8 +24,9 @@ public class Player implements Runnable {
     public void run() {
 
         try {
+
             this.name = MenuGenerator.askName(playerSocket);
-            System.out.println(name);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
