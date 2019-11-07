@@ -6,6 +6,7 @@ import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 
 public class PlayerHandler implements Runnable {
@@ -14,10 +15,16 @@ public class PlayerHandler implements Runnable {
     private String name;
     private Team team;
     private Prompt prompt;
+    private Game game;
 
     public PlayerHandler(Socket playerSocket) {
 
         this.playerSocket = playerSocket;
+        try {
+            this.prompt = new Prompt(playerSocket.getInputStream(), new PrintStream(playerSocket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -27,7 +34,10 @@ public class PlayerHandler implements Runnable {
         try {
             this.name = MenuGenerator.askName(playerSocket);
             joinPlayerMap();
-            chooseGameRoom();
+            this.game = chooseGameRoom();
+            this.team = MenuGenerator.chooseTeam(prompt);
+            game.addPlayer(this);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,27 +45,34 @@ public class PlayerHandler implements Runnable {
 
     }
 
-    public String getName() {
-        return name;
-    }
 
     public void joinPlayerMap() {
         Server.getPlayers().put(name,this);
     }
 
-    public void chooseGameRoom() {
 
-        int gameRoom;
+    public Game chooseGameRoom() {
 
-/*        while (!game.hasEmptySlot()) {
+        int gameRoom = MenuGenerator.joinGame(prompt);
+
+        while (Server.getGames().get(gameRoom).hasEmptySlots()) {
             gameRoom = MenuGenerator.joinGame(prompt);
             System.out.println(Messages.GAME_FULL);
-        }*/
+        }
 
+        return Server.getGames().get(gameRoom);
     }
+
 
     public OutputStream getOutputStream() throws IOException {
         return playerSocket.getOutputStream();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
 }
