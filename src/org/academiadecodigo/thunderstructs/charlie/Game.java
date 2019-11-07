@@ -1,5 +1,6 @@
 package org.academiadecodigo.thunderstructs.charlie;
 
+import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 public class Game {
@@ -7,42 +8,64 @@ public class Game {
     private int score;
     private int numMaxPlayers;
     private Player[] players;
+    private Prompt prompt;
+    private GameType gameType;
 
-    public Game(int num) {
+
+    public Game(int num, GameType type) {
+
         score = 50;
+
         numMaxPlayers = num;
+        gameType = type;
         players = new Player[numMaxPlayers];
+
     }
 
     public void init() {
 
         while (score <= 0 && score >= 100) {
 
+            for(Player p : players) {
+
+                switch(gameType) {
+
+                    case CALC:
+                        break;
+
+                    case WORDS:
+                        break;
+                }
+
+                p.getOutputStream().println();
+
+            }
 
         }
 
         winner(score);
     }
 
-    public void initializePlayers(Player player) {
+    public void addPlayer(Player player) {
 
-        for (Player p : players) {
+        for (int i = 0; i < numMaxPlayers; i++) {
 
-            if (p == null) {
-                p = player;
+            if (players[i] == null) {
+                players[i] = player;
                 break;
             }
-
         }
-
     }
 
-    public void hasEmptySlots() {
+    public boolean hasEmptySlots() {
 
         for (Player p : players) {
-
+            if(p == null) {
+                return true;
+            }
         }
 
+        return false;
     }
 
     public void winner(int score) {
@@ -64,5 +87,11 @@ public class Game {
 
     }
 
+
+    public static void main(String[] args) {
+
+
+
+    }
 
 }
