@@ -1,5 +1,9 @@
 package org.academiadecodigo.thunderstructs.charlie.Generators;
 
+import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+
+import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
 
 import java.io.IOException;
@@ -22,11 +26,38 @@ public class MenuGenerator {
 
     }
 
-    public static int joinGame() {
-        return 0;
+    public static int joinGame(Prompt prompt) {
+
+        String[] games = new String[Server.getGames().size()];
+
+        for ( String game : games ){
+            game = "Game";
+            System.out.println(game);
+        }
+
+        MenuInputScanner menu = new MenuInputScanner(games);
+
+        menu.setMessage("Pick your game: ");
+
+        return prompt.getUserInput(menu);
     }
 
-    public static Team chooseTeam() {
+    public static Team chooseTeam(Prompt prompt) {
+
+        String[] teams = {"Red", "Blue"};
+
+        MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
+
+        int choice = prompt.getUserInput(menuInputScanner);
+
+        switch (choice) {
+            case 1:
+                return Team.RED;
+
+            case 2:
+                return Team.BLUE;
+        }
+
         return null;
     }
 

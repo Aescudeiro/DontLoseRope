@@ -47,12 +47,10 @@ public class PlayerHandler implements Runnable {
 
         int gameRoom;
 
-        while (!game.hasEmptySlot()) {
+/*        while (!game.hasEmptySlot()) {
             gameRoom = MenuGenerator.joinGame(prompt);
             System.out.println(Messages.GAME_FULL);
-        }
-
-        if ()
+        }*/
 
     }
 
