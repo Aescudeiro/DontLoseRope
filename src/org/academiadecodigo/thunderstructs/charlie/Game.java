@@ -4,6 +4,6 @@ public class Game {
 
     private int score;
     private int numMaxPlayers;
-    private Player[] players;
+    private PlayerHandler[] playerHandlers;
 
 }
