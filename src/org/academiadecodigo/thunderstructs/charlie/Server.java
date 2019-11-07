@@ -3,6 +3,8 @@ package org.academiadecodigo.thunderstructs.charlie;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -12,9 +14,8 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private ServerSocket serverSocket;
-    private Socket playerSocket;
-    private Map<String, Player> players;
-    private Set<Game> games;
+    private static Map<String, Player> players = new HashMap<>();
+    private static Set<Game> games = new HashSet<>();
 
     private Server(ServerSocket serverSocket) {
 
@@ -30,8 +31,8 @@ public class Server {
             Game g1 = new Game();
             Game g2 = new Game();
 
-            server.games.add(g1);
-            server.games.add(g2);
+            games.add(g1);
+            games.add(g2);
             server.init();
 
         } catch (IOException e) {
@@ -48,15 +49,11 @@ public class Server {
 
             while (serverSocket.isBound()) {
 
-                this.playerSocket = serverSocket.accept();
-
+                Socket playerSocket = serverSocket.accept();
                 Player player = new Player(playerSocket);
-
                 ExecutorService s1 = Executors.newCachedThreadPool();
 
                 s1.submit(player);
-
-                players.put(player.getName(), player);
 
             }
 
@@ -68,4 +65,11 @@ public class Server {
 
     }
 
+    public static Map<String, Player> getPlayers() {
+        return players;
+    }
+
+    public static Set<Game> getGames() {
+        return games;
+    }
 }
