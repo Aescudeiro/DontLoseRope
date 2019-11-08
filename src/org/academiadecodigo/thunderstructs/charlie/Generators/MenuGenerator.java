@@ -4,6 +4,7 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
 import org.academiadecodigo.thunderstructs.charlie.Game;
+import org.academiadecodigo.thunderstructs.charlie.GameType;
 import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
 
@@ -28,45 +29,64 @@ public class MenuGenerator {
 
     }
 
+    public static int mainMenu(Prompt prompt) {
+
+        String[] menu = {"Join game","Quit"};
+
+        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
+
+        return prompt.getUserInput(menuInputScanner);
+
+    }
+
     public static int joinGame(Prompt prompt) {
 
-        String[] games = new String[Server.getGames().size()];
+        String[] games = new String[Server.getGames().size() + 1];
 
         int counter = 1;
         for (Game s : Server.getGames().values()) {
-                games[counter-1] = "Game of " + s.getGameType().toString().substring(0,1) +
-                        s.getGameType().toString().substring(1).toLowerCase();
+                games[counter-1] = s.getGameType().toString().substring(0,1) +
+                        s.getGameType().toString().substring(1).toLowerCase() + " game";
             counter++;
         }
+
+        games[games.length - 1] = "Go back";
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
         menu.setMessage("Choose your game: ");
 
-        return prompt.getUserInput(menu);
+        int choice = prompt.getUserInput(menu);
+
+        if ( choice == games.length - 2 ) {
+            return choice;
+        }
+
+        return 0;
     }
 
     public static Team chooseTeam(Prompt prompt) {
 
-        String[] teams = new String[Team.values().length];
+        String[] teams = new String[Team.values().length + 1];
 
         for (int i = 0; i < teams.length; i++) {
             teams[i] = Team.values()[i].toString();
         }
 
+        teams[teams.length - 1] = "Go back";
+
         MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
-        switch (choice) {
-            case 1:
-                return Team.RED;
+        Team[] teamTypes = Team.values();
 
-            case 2:
-                return Team.BLUE;
+        if (choice < teamTypes.length + 1) {
+            return teamTypes[choice - 1];
         }
 
         return null;
+
     }
 
 }
