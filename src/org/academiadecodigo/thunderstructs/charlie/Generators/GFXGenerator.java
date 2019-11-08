@@ -56,7 +56,7 @@ public class GFXGenerator {
 
     public static void main(String[] args) {
         drawGameTitle();
-        drawRope(100);
+        drawRope(50);
     }
 
 }

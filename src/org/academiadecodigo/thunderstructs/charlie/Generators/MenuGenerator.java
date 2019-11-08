@@ -9,6 +9,7 @@ import org.academiadecodigo.thunderstructs.charlie.Team;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -30,9 +31,7 @@ public class MenuGenerator {
 
         String[] games = new String[Server.getGames().size()];
 
-        for ( String game : games ){
-            game = "Game";
-        }
+        Arrays.fill(games, "Game");
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
