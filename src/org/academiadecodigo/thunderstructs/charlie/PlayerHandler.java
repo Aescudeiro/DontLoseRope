@@ -63,7 +63,7 @@ public class PlayerHandler implements Runnable {
 
     public void playerRun() {
 
-        int menuOption = MenuGenerator.mainMenu();
+        int menuOption = MenuGenerator.mainMenu(prompt);
 
         try {
 
