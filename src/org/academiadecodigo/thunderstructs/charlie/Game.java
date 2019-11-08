@@ -37,7 +37,8 @@ public class Game {
         System.out.println("waiting for other players");
         System.out.println(player.getName() + " is waiting for game " + this.toString() + " to start...");
 
-        while ((score >= 0 || score <= 100) && (activePlayers == numMaxPlayers - 1)) {
+        while ((score != 0 || score != 100) && (activePlayers == numMaxPlayers)) {
+            System.out.println("active players: " + activePlayers);
 
             for(PlayerHandler p : players) {
 
