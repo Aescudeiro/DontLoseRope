@@ -2,24 +2,29 @@ package org.academiadecodigo.thunderstructs.charlie;
 
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
-import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class Game {
 
     private static final int MAX_SCORE = 100;
     private volatile int score;
+    private volatile int activePlayers;
     private int numMaxPlayers;
     private int difficulty;
-    private volatile int activePlayers;
+    private boolean fixedGame;
 
+    private HashMap<Team, Integer>
     private PlayerHandler[] players;
     private GameType gameType;
     private Team[] teams = new Team[2];
 
 
-    public Game(int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2) {
+    public Game(int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean fixed) {
 
+        fixedGame = fixed;
         score = MAX_SCORE / 2;
         activePlayers = 0;
 
@@ -35,10 +40,10 @@ public class Game {
     }
 
 
-
     public synchronized void addPlayer(PlayerHandler player) {
 
         if (activePlayers < numMaxPlayers) {
+
             players[activePlayers] = player;
             System.out.println(player.getName() + " added to game as player " + (activePlayers + 1));
             activePlayers++;
@@ -50,8 +55,8 @@ public class Game {
 
     public boolean hasEmptySlots() {
 
-        for (PlayerHandler p : players) {
-            if (p == null) {
+        for (PlayerHandler playerHandler : players) {
+            if (playerHandler == null) {
                 System.err.println(this.toString() + ": has free slots. room size: " + this.players.length);
                 return true;
             }
@@ -60,36 +65,43 @@ public class Game {
         return false;
     }
 
-    public void gameOver(PlayerHandler player) {
+    public void gameOver(PlayerHandler playerHandler) {
+
         winner(score);
+
+        if (!fixedGame) {
+            for (Game game : Server.getGames().values()) {
+                if (game.equals(this)) {
+                    Server.getGames().remove(playerHandler.getGameRoom());
+                    return;
+                }
+            }
+        }
+
+        Arrays.fill(players, null);
     }
 
-    public void checkWord(String word, PlayerHandler p) {
+    public synchronized void checkWord(String word, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
         ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + word + " = ");
 
-        if (p.getPrompt().getUserInput(ask).equals(word)) {
-            score += p.getTeam().getValue();
+        if (playerHandler.getPrompt().getUserInput(ask).equals(word)) {
+            score += playerHandler.getTeam().getValue();
         }
 
     }
 
-    public void checkEquation(String[] numbers, PlayerHandler p) {
+    public synchronized void checkEquation(String[] numbers, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
         ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + numbers[0] + " = ");
 
-        if (p.getPrompt().getUserInput(ask).equals(numbers[1])) {
-            score += p.getTeam().getValue();
+        if (playerHandler.getPrompt().getUserInput(ask).equals(numbers[1])) {
+            score += playerHandler.getTeam().getValue();
         }
 
     }
-
-    public void updateScore(PlayerHandler player) {
-        score += player.getTeam().getValue();
-    }
-
 
     public void winner(int score) {
         switch (score) {
@@ -104,16 +116,15 @@ public class Game {
 
     public void announceWinner(Team team) {
 
-        for (PlayerHandler p : players) {
-            if(p.getTeam() == team) {
-                p.getOutputStream().println(
-                        GFXGenerator.drawYouWon(p.getTeam().getColor(), score, teams[0], teams[1]));
+        for (PlayerHandler playerHandler : players) {
+            if (playerHandler.getTeam() == team) {
+                playerHandler.getOutputStream().println(
+                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
                 continue;
             }
-            p.getOutputStream().println(
-                    GFXGenerator.drawGameOver(p.getTeam().getColor(), score, teams[0], teams[1]));
+            playerHandler.getOutputStream().println(
+                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
         }
-
 
     }
 
@@ -144,5 +155,9 @@ public class Game {
 
     public PlayerHandler[] getPlayers() {
         return players;
+    }
+
+    public Team[] getTeams() {
+        return teams;
     }
 }
