@@ -93,7 +93,7 @@ public class Game {
     public void checkWord(String word, PlayerHandler p) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score) + word);
+        ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + word);
 
         if(p.getPrompt().getUserInput(ask).equals(word)) {
             score += p.getTeam().getValue();
@@ -104,7 +104,7 @@ public class Game {
     public void checkEquation(String[] numbers, PlayerHandler p) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score) + numbers[0]);
+        ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + numbers[0]);
 
         if(p.getPrompt().getUserInput(ask).equals(numbers[1])){
             score += p.getTeam().getValue();
