@@ -40,8 +40,30 @@ public class ChallengeGenerator {
      * @return a String representing a word of variable length according to difficulty
      */
     public static String generateWord(int difficulty) {
-        String[] words = {"apple", "orange", "table", "coffee", "mouse", "cookies", "computer", "chair", "keyboard", "school", "code", "academy"};
-        return words[(int) (Math.random() * words.length)];
+        
+        String[] words1 = {"fax", "job", "joe", "joy", "lazy", "hot", "jazz", "joke", "jump", "code", "java", "quad", "jail", "jade", "zap", "vox", "fox", "max", "zen", "log", "wax", "jar", "hot", "cup", "gym", "hot", "hot"};
+        String[] words2 = {"apple", "orange", "buzzed", "coffee", "mouse", "cookies", "computer", "frizzy", "keyboard", "school", "pizzas", "academy"};
+        String[] words3 = {"blackjacks", "complexify", "carjacking", "exorcizing", "kickboxing", "maximizers", "backpacker", "lumberjack", "keyboard", "complexing", "chickenpox", "jockstraps", "humanizing", "subjective", "quicksteps", "polygamize", "pickpocket", "microquake", "equalizers", "enzymology"};
+        String[] words4 = {"numerale", "sepulcrum", "organizzare", "migliore", "scegliere", "settimana", "piuttosto", "particolarmente", "rispondere", "susceptum", "suscipere", "ripetizione", "quoziente", "dovrebbe", "verificarsi", "moltiplicare", "spostare", "mezzogiorno", "uterque", "utrumque", "spettacolo", "mescolare"};
+
+        switch(difficulty){
+            case 1:
+                return words1[(int) (Math.random() * words1.length)];
+
+            case 2:
+                return words2[(int) (Math.random() * words2.length)];
+
+            case 3:
+                return words3[(int) (Math.random() * words3.length)];
+
+            case 4:
+                return words4[(int) (Math.random() * words4.length)];
+
+            default:
+                return null;
+
+        }
+
     }
 
     private static String[] multiplication() {
