@@ -34,8 +34,8 @@ public class MenuGenerator {
 
         int counter = 1;
         for (Game s : Server.getGames().values()) {
-                games[counter-1] = "Game of " + s.getGameType().toString().substring(0,1) +
-                        s.getGameType().toString().substring(1).toLowerCase();
+                games[counter-1] = s.getGameType().toString().substring(0,1) +
+                        s.getGameType().toString().substring(1).toLowerCase() + " game";
             counter++;
         }
 
