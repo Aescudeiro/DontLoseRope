@@ -65,15 +65,8 @@ public class Game {
             activePlayers++;
             return;
         }
-        System.out.println("This room (" + this.toString() + ") is full");
-        /*for (int i = 0; i < numMaxPlayers; i++) {
 
-            System.out.println("adding player");
-            if (players[i] == null) {
-                players[i] = player;
-                break;
-            }
-        }*/
+        System.out.println("This room (" + this.toString() + ") is full");
     }
 
     public boolean hasEmptySlots() {
@@ -137,5 +130,13 @@ public class Game {
 
     public GameType getGameType() {
         return gameType;
+    }
+
+    public int getNumMaxPlayers() {
+        return numMaxPlayers;
+    }
+
+    public int getActivePlayers() {
+        return activePlayers;
     }
 }

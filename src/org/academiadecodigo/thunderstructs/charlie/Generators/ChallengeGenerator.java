@@ -81,14 +81,4 @@ public class ChallengeGenerator {
         return new String[]{equation, result};
     }
 
-    public static void main(String[] args) {
-
-        for (int i = 0; i < 20; i++) {
-            String[] teste = ChallengeGenerator.generateEquation(2);
-
-            for (String s : teste) {
-                System.out.println(s);
-            }
-        }
-    }
 }
