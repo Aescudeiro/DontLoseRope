@@ -133,4 +133,8 @@ public class Game {
     public String toString() {
         return gameType.toString();
     }
+
+    public GameType getGameType() {
+        return gameType;
+    }
 }
