@@ -3,6 +3,7 @@ package org.academiadecodigo.thunderstructs.charlie.Generators;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
+import org.academiadecodigo.thunderstructs.charlie.Game;
 import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
 
@@ -31,7 +32,16 @@ public class MenuGenerator {
 
         String[] games = new String[Server.getGames().size()];
 
-        Arrays.fill(games, "Game");
+        int i = 0;
+        for (Game s : Server.getGames().values()) {
+            for (int y = i; y < games.length; y++) {
+                if (y > i) {
+                    break;
+                }
+                games[y] = "Game of " + s.getGameType().toString().substring(0,1) + s.getGameType().toString().substring(1).toLowerCase();
+            }
+            i++;
+        }
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
@@ -44,7 +54,7 @@ public class MenuGenerator {
 
         String[] teams = new String[Team.values().length];
 
-        for(int i = 0; i < teams.length; i++){
+        for (int i = 0; i < teams.length; i++) {
             teams[i] = Team.values()[i].toString();
         }
 
