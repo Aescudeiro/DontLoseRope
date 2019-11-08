@@ -51,12 +51,12 @@ public class Server {
 
             while (serverSocket.isBound()) {
 
-                System.out.println("Waiting for player to join...");
+                System.out.println("Server: Waiting for player to join...");
                 Socket playerSocket = serverSocket.accept();
                 System.out.println(playerSocket.getInetAddress().toString());
                 PlayerHandler playerHandler = new PlayerHandler(playerSocket);
                 s1.submit(playerHandler);
-                System.out.println("New player joined.");
+                System.out.println("Server: New player joined.");
 
             }
 

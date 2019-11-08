@@ -16,7 +16,6 @@ public class Game {
     private int activePlayers;
 
     private PlayerHandler[] players;
-    private Prompt prompt;
     private GameType gameType;
 
 
@@ -33,9 +32,10 @@ public class Game {
 
     }
 
-    public void init() {
+    public void init(PlayerHandler player) {
 
-        System.out.println(players[activePlayers].getName() + " is waiting for game " + this.toString() + " to start...");
+        System.out.println("waiting for other players");
+        System.out.println(player.getName() + " is waiting for game " + this.toString() + " to start...");
 
         while ((score >= 0 || score <= 100) && (activePlayers == numMaxPlayers - 1)) {
 
@@ -126,11 +126,7 @@ public class Game {
     public void announceWinner(Team team) {
 
         for (PlayerHandler p : players) {
-            try {
-                p.getOutputStream().println(Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            p.getOutputStream().println(Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
         }
 
     }

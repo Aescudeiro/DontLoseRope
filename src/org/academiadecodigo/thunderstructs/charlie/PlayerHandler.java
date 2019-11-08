@@ -15,6 +15,7 @@ public class PlayerHandler implements Runnable {
 
     private Socket playerSocket;
     private StringInputScanner stringInputScanner;
+    private PrintWriter printToPlayer;
     private String name;
     private Team team;
     private Prompt prompt;
@@ -23,8 +24,11 @@ public class PlayerHandler implements Runnable {
     public PlayerHandler(Socket playerSocket) {
 
         this.playerSocket = playerSocket;
+
         try {
             this.prompt = new Prompt(playerSocket.getInputStream(), new PrintStream(playerSocket.getOutputStream()));
+            this.printToPlayer = new PrintWriter(playerSocket.getOutputStream(), true);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,8 +43,9 @@ public class PlayerHandler implements Runnable {
             joinPlayerMap();
             this.game = chooseGameRoom();
             this.team = MenuGenerator.chooseTeam(prompt);
+            printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
             game.addPlayer(this);
-            game.init();
+            game.init(this);
 
 
         } catch (IOException e) {
@@ -62,10 +67,9 @@ public class PlayerHandler implements Runnable {
 
         while (!game.hasEmptySlots()) {
 
-            System.out.println(Messages.GAME_FULL);
+            printToPlayer.println(Messages.GAME_FULL);
             gameRoom = MenuGenerator.joinGame(prompt);
             game = Server.getGames().get(gameRoom);
-            System.out.println("attempting to join game: " + gameRoom);
 
         }
 
@@ -74,8 +78,8 @@ public class PlayerHandler implements Runnable {
     }
 
 
-    public PrintWriter getOutputStream() throws IOException {
-        return new PrintWriter(playerSocket.getOutputStream(), true);
+    public PrintWriter getOutputStream() {
+        return printToPlayer;
     }
 
     public String getName() {
