@@ -26,11 +26,13 @@ public class Server {
         try {
 
             Server server = new Server(new ServerSocket(8080));
+
             Game g1 = new Game(2, GameType.CALC, 1);
             Game g2 = new Game(2, GameType.WORDS, 1);
 
             games.put(1, g1);
             games.put(2, g2);
+
             server.init();
 
         } catch (IOException e) {
@@ -46,14 +48,15 @@ public class Server {
         try {
 
             ExecutorService s1 = Executors.newCachedThreadPool();
+
             while (serverSocket.isBound()) {
 
-                System.out.println("waiting for client");
+                System.out.println("Waiting for player to join...");
                 Socket playerSocket = serverSocket.accept();
                 System.out.println(playerSocket.getInetAddress().toString());
                 PlayerHandler playerHandler = new PlayerHandler(playerSocket);
                 s1.submit(playerHandler);
-                System.out.println("submitted player");
+                System.out.println("New player joined.");
 
             }
 

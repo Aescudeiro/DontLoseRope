@@ -3,6 +3,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class Game {
     private int score;
     private int numMaxPlayers;
     private int difficulty;
+    private int activePlayers;
 
     private PlayerHandler[] players;
     private Prompt prompt;
@@ -21,6 +23,7 @@ public class Game {
     public Game(int numMaxPlayers, GameType type, int difficulty) {
 
         score = 50;
+        this.activePlayers = 0;
 
         this.numMaxPlayers = numMaxPlayers;
         gameType = type;
@@ -32,9 +35,9 @@ public class Game {
 
     public void init() {
 
-        System.out.println("entered game init");
+        System.out.println(players[activePlayers].getName() + " is waiting for game " + this.toString() + " to start...");
 
-        while (score >= 0 || score <= 100) {
+        while ((score >= 0 || score <= 100) && (activePlayers == numMaxPlayers - 1)) {
 
             for(PlayerHandler p : players) {
 
@@ -57,42 +60,39 @@ public class Game {
 
     public void addPlayer(PlayerHandler player) {
 
-        for (int i = 0; i < numMaxPlayers; i++) {
+        if(activePlayers < numMaxPlayers){
+            players[activePlayers] = player;
+            System.out.println(player.getName() + " added to game as player " + (activePlayers + 1));
+            activePlayers++;
+            return;
+        }
+        System.out.println("This room (" + this.toString() + ") is full");
+        /*for (int i = 0; i < numMaxPlayers; i++) {
 
             System.out.println("adding player");
             if (players[i] == null) {
                 players[i] = player;
                 break;
             }
-        }
+        }*/
     }
 
     public boolean hasEmptySlots() {
 
-        System.out.println("enter empty slots");
-
         for (PlayerHandler p : players) {
-            //System.out.println(p.getName());
             if(p == null) {
+                System.err.println(this.toString() + ": has free slots");
                 return true;
             }
         }
-
+        System.err.println(this.toString() + ": slots are full");
         return false;
-    }
-
-    public String getNumber(String[] array) {
-        return array[1];
-    }
-
-    public String getEquation(String[] array){
-        return array[0];
     }
 
     public void checkWord(String word, PlayerHandler p) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(word);
+        ask.setMessage(GFXGenerator.drawRope(score) + word);
 
         if(p.getPrompt().getUserInput(ask).equals(word)) {
             score += p.getTeam().getValue();
@@ -103,9 +103,9 @@ public class Game {
     public void checkEquation(String[] numbers, PlayerHandler p) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(getEquation(numbers));
+        ask.setMessage(GFXGenerator.drawRope(score) + numbers[0]);
 
-        if(p.getPrompt().getUserInput(ask).equals(getNumber(numbers))){
+        if(p.getPrompt().getUserInput(ask).equals(numbers[1])){
             score += p.getTeam().getValue();
         }
 
@@ -135,11 +135,8 @@ public class Game {
 
     }
 
-
-    public static void main(String[] args) {
-
-
-
+    @Override
+    public String toString() {
+        return gameType.toString();
     }
-
 }

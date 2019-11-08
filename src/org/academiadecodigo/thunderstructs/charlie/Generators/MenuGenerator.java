@@ -20,7 +20,7 @@ public class MenuGenerator {
 
         PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
 
-        printWriter.println("Set your username: ");
+        printWriter.println(GFXGenerator.drawGameTitle() + "\n WELCOME PLAYER! Please insert your name: ");
 
         return input.nextLine();
 
@@ -36,14 +36,18 @@ public class MenuGenerator {
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
-        menu.setMessage("Pick your game: ");
+        menu.setMessage("Choose your game: ");
 
         return prompt.getUserInput(menu);
     }
 
     public static Team chooseTeam(Prompt prompt) {
 
-        String[] teams = {"Red", "Blue"};
+        String[] teams = new String[Team.values().length];
+
+        for(int i = 0; i < teams.length; i++){
+            teams[i] = Team.values()[i].toString();
+        }
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
 

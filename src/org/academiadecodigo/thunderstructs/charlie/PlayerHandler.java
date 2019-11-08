@@ -38,11 +38,8 @@ public class PlayerHandler implements Runnable {
             this.name = MenuGenerator.askName(playerSocket);
             joinPlayerMap();
             this.game = chooseGameRoom();
-            System.out.println("chose game room");
             this.team = MenuGenerator.chooseTeam(prompt);
-            System.out.println("chose team");
             game.addPlayer(this);
-            System.out.println("added player");
             game.init();
 
 
@@ -61,25 +58,22 @@ public class PlayerHandler implements Runnable {
     public Game chooseGameRoom() {
 
         int gameRoom = MenuGenerator.joinGame(prompt);
-        System.out.println(gameRoom);
-
         Game game = Server.getGames().get(gameRoom);
 
         while (!game.hasEmptySlots()) {
-            System.out.println("in loop");
-            //sout needs to go to player
+
             System.out.println(Messages.GAME_FULL);
             gameRoom = MenuGenerator.joinGame(prompt);
-            //make him be able to go to other room
+
         }
 
-        System.out.println("game had space!");
+        System.out.println(name + " had space in game " + game.toString());
         return Server.getGames().get(gameRoom);
     }
 
 
     public PrintWriter getOutputStream() throws IOException {
-        return new PrintWriter(playerSocket.getOutputStream());
+        return new PrintWriter(playerSocket.getOutputStream(), true);
     }
 
     public String getName() {
