@@ -29,7 +29,7 @@ public class GFXGenerator {
 
         String s5 = " ########################################################################################################################################\n";
         String s6 = " #                                                                                                                                      #\n";
-        String s7 = " #" + Color.ANSI_BLUE + team1 + firstRope.toString() + Color.ANSI_RESET + "||" + Color.ANSI_RED + secondRope.toString() + team2 + Color.ANSI_RESET + "#\n";
+        String s7 = " #" + t1.getColor() + team1 + Color.ANSI_RESET + t2.getColor() + firstRope.toString() + Color.ANSI_RESET + "||" + t1.getColor() + secondRope.toString() + Color.ANSI_RESET + t2.getColor() + team2 + Color.ANSI_RESET + "#\n";
         String s8 = " #                                                                                                                                      #\n";
         String s9 = " ########################################################################################################################################\n";
 

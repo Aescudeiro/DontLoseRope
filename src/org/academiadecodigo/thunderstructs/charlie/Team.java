@@ -5,7 +5,10 @@ import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 public enum Team {
 
     RED("Red", 10, Color.ANSI_RED),
-    BLUE("Blue", -10, Color.ANSI_BLUE);
+    BLUE("Blue", -10, Color.ANSI_BLUE),
+    GREEN("Green", 10, Color.ANSI_GREEN),
+    YELLOW("Yellow", -10, Color.ANSI_YELLOW);
+
 
     private String team;
     private int value;

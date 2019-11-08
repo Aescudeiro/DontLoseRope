@@ -107,11 +107,11 @@ public class Game {
         for (PlayerHandler p : players) {
             if(p.getTeam() == team) {
                 p.getOutputStream().println(
-                        Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
+                        GFXGenerator.drawYouWon(p.getTeam().getColor(), score, teams[0], teams[1]));
                 continue;
             }
             p.getOutputStream().println(
-                    Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
+                    GFXGenerator.drawGameOver(p.getTeam().getColor(), score, teams[0], teams[1]));
         }
 
 
