@@ -16,8 +16,6 @@ public class Game {
     private boolean fixedGame;
 
     private Team[] teams;
-    private Team team1;
-    private Team team2;
     private PlayerHandler[] players;
     private GameType gameType;
 
@@ -28,10 +26,7 @@ public class Game {
         score = MAX_SCORE / 2;
         activePlayers = 0;
 
-        this.team1 = team1;
-        this.team2 = team2;
         teams = new Team[2];
-
         teams[0] = team1;
         teams[1] = team2;
 
@@ -88,7 +83,7 @@ public class Game {
     public void checkWord(String word, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, team1, team2) + word + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + word + " = ");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(word)) {
             updateScore(playerHandler);
@@ -99,7 +94,7 @@ public class Game {
     public void checkEquation(String[] numbers, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, team1, team2) + numbers[0] + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + numbers[0] + " = ");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(numbers[1])) {
             //score += playerHandler.getTeam().getValue();
@@ -108,7 +103,7 @@ public class Game {
     }
 
     public void updateScore(PlayerHandler playerHandler) {
-        if(playerHandler.getTeam() == team1) {
+        if(playerHandler.getTeam() == teams[0]) {
             score -= Server.TEAM_SCORE;
 
             return;
@@ -119,10 +114,10 @@ public class Game {
     public void winner(int score) {
         switch (score) {
             case 0:
-                announceWinner(team1);
+                announceWinner(teams[0]);
                 break;
             case 100:
-                announceWinner(team2);
+                announceWinner(teams[1]);
 
                 break;
         }
@@ -134,12 +129,12 @@ public class Game {
 
             if (playerHandler.getTeam() == team) {
                 playerHandler.getOutputStream().println(
-                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, team1, team2));
+                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
                 continue;
             }
 
             playerHandler.getOutputStream().println(
-                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, team1, team2));
+                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
         }
 
     }
