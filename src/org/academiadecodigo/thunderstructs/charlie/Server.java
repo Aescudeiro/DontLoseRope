@@ -28,7 +28,7 @@ public class Server {
             Server server = new Server(new ServerSocket(8080));
 
             Game g1 = new Game(2, GameType.CALC, 1);
-            Game g2 = new Game(3, GameType.WORDS, 1);
+            Game g2 = new Game(2, GameType.WORDS, 1);
             Game g3 = new Game(2, GameType.WORDS, 1);
             Game g4 = new Game(2, GameType.CALC, 1);
 

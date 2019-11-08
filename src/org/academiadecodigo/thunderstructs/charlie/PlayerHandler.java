@@ -2,6 +2,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
@@ -39,13 +40,26 @@ public class PlayerHandler implements Runnable {
 
         try {
             this.name = MenuGenerator.askName(playerSocket);
+
             joinPlayerMap();
+
             this.game = chooseGameRoom();
             this.team = MenuGenerator.chooseTeam(prompt);
+
             printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
             game.addPlayer(this);
-            game.init(this);
 
+            while (game.getActivePlayers() != game.getNumMaxPlayers()) {
+            }
+
+            System.out.println(name + " left the while");
+
+            while (game.getScore() > 0 && game.getScore() < 100) {
+                sendChallenge(this);
+            }
+
+            System.out.println("WINNER");
+            game.gameOver(this);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,9 +69,8 @@ public class PlayerHandler implements Runnable {
 
 
     public void joinPlayerMap() {
-        Server.getPlayers().put(name,this);
+        Server.getPlayers().put(name, this);
     }
-
 
     public Game chooseGameRoom() {
 
@@ -76,6 +89,19 @@ public class PlayerHandler implements Runnable {
         return Server.getGames().get(gameRoom);
     }
 
+    public void sendChallenge(PlayerHandler player) {
+
+        switch (game.getGameType()) {
+            case CALC:
+                game.checkEquation(ChallengeGenerator.generateEquation(game.getDifficulty()), player);
+                System.out.println(game.getScore());
+                break;
+
+            case WORDS:
+                game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
+                break;
+        }
+    }
 
     public PrintWriter getOutputStream() {
         return printToPlayer;
