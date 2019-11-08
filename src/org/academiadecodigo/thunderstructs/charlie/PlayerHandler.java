@@ -7,6 +7,7 @@ import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -15,12 +16,12 @@ import java.net.Socket;
 public class PlayerHandler implements Runnable {
 
     private Socket playerSocket;
-    private StringInputScanner stringInputScanner;
     private PrintWriter printToPlayer;
     private String name;
     private Team team;
     private Prompt prompt;
     private Game game;
+    private boolean quit;
 
     public PlayerHandler(Socket playerSocket) {
 
@@ -41,29 +42,13 @@ public class PlayerHandler implements Runnable {
 
         try {
             this.name = MenuGenerator.askName(playerSocket);
-
             joinPlayerMap();
 
-            this.game = chooseGameRoom();
-            this.team = MenuGenerator.chooseTeam(prompt);
+            while (!quit) {
 
-            printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
-            game.addPlayer(this);
+                playerRun();
 
-            while (game.getActivePlayers() != game.getNumMaxPlayers()) {
             }
-
-            System.out.println(name + " left the while");
-
-            while (game.getScore() > 0 && game.getScore() < 100) {
-                sendChallenge(this);
-            }
-
-            PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
-            out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
-
-            System.out.println("WINNER");
-            game.gameOver(this);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,6 +59,51 @@ public class PlayerHandler implements Runnable {
 
     public void joinPlayerMap() {
         Server.getPlayers().put(name, this);
+    }
+
+    public void playerRun() {
+
+        int menuOption = MenuGenerator.mainMenu(prompt);
+
+        try {
+
+            switch (menuOption) {
+                case 0:
+                    quit = true;
+                    break;
+                case 1:
+                    joinGame();
+                    break;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void joinGame() throws IOException{
+
+        this.game = chooseGameRoom();
+        this.team = MenuGenerator.chooseTeam(prompt);
+
+        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
+        game.addPlayer(this);
+
+        while (game.getActivePlayers() != game.getNumMaxPlayers()) {
+        }
+
+        System.out.println(name + " left the while");
+
+        while (game.getScore() > 0 && game.getScore() < 100) {
+            sendChallenge(this);
+        }
+
+        PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
+        out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
+
+        System.out.println("WINNER");
+        game.gameOver(this);
+
     }
 
     public Game chooseGameRoom() {
