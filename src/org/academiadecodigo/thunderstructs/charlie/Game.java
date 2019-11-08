@@ -4,7 +4,6 @@ import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 
 public class Game {
@@ -16,10 +15,11 @@ public class Game {
     private int difficulty;
     private boolean fixedGame;
 
-    private HashMap<Team, Integer>
+    private Team[] teams;
+    private Team team1;
+    private Team team2;
     private PlayerHandler[] players;
     private GameType gameType;
-    private Team[] teams = new Team[2];
 
 
     public Game(int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean fixed) {
@@ -27,6 +27,10 @@ public class Game {
         fixedGame = fixed;
         score = MAX_SCORE / 2;
         activePlayers = 0;
+
+        this.team1 = team1;
+        this.team2 = team2;
+        teams = new Team[2];
 
         teams[0] = team1;
         teams[1] = team2;
@@ -81,35 +85,45 @@ public class Game {
         Arrays.fill(players, null);
     }
 
-    public synchronized void checkWord(String word, PlayerHandler playerHandler) {
+    public void checkWord(String word, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + word + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, team1, team2) + word + " = ");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(word)) {
-            score += playerHandler.getTeam().getValue();
+            updateScore(playerHandler);
         }
 
     }
 
-    public synchronized void checkEquation(String[] numbers, PlayerHandler playerHandler) {
+    public void checkEquation(String[] numbers, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, players[0].getTeam(), players[1].getTeam()) + numbers[0] + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, team1, team2) + numbers[0] + " = ");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(numbers[1])) {
-            score += playerHandler.getTeam().getValue();
+            //score += playerHandler.getTeam().getValue();
+            updateScore(playerHandler);
         }
+    }
 
+    public void updateScore(PlayerHandler playerHandler) {
+        if(playerHandler.getTeam() == team1) {
+            score -= Server.TEAM_SCORE;
+
+            return;
+        }
+        score += Server.TEAM_SCORE;
     }
 
     public void winner(int score) {
         switch (score) {
             case 0:
-                announceWinner(teams[0]);
+                announceWinner(team1);
                 break;
             case 100:
-                announceWinner(teams[1]);
+                announceWinner(team2);
+
                 break;
         }
     }
@@ -117,13 +131,15 @@ public class Game {
     public void announceWinner(Team team) {
 
         for (PlayerHandler playerHandler : players) {
+
             if (playerHandler.getTeam() == team) {
                 playerHandler.getOutputStream().println(
-                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
+                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, team1, team2));
                 continue;
             }
+
             playerHandler.getOutputStream().println(
-                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
+                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, team1, team2));
         }
 
     }

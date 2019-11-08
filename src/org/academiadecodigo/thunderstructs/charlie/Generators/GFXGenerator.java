@@ -80,7 +80,7 @@ public class GFXGenerator {
             sb.append(color + "                  Y88b  d88P  d8888888888 888   \"   888 888             Y88b. .d88P    Y888P    888        888  T88b\n");
             sb.append(color + "                  \"Y8888P88 d88P     888 888       888 8888888888       \"Y88888P\"      Y8P     8888888888 888   T88b\n");
 
-        return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString();
+        return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
     }
 
     public static String drawYouWon(String c, int score, Team t1, Team t2){
@@ -98,13 +98,8 @@ public class GFXGenerator {
             sb.append(color + "                                  888     Y88b. .d88P Y88b. .d88P      8888P   Y8888 Y88b. .d88P 888   Y8888\n");
             sb.append(color + "                                  888      \"Y88888P\"   \"Y88888P\"       888P     Y888  \"Y88888P\"  888    Y888\n");
 
-        return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString();
+        return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
 
     }
 
-    public static void main(String[] args) {
-
-        System.out.println(drawGameOver(Color.ANSI_GREEN, 78, Team.RED, Team.BLUE));
-
-    }
 }
