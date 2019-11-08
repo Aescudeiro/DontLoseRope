@@ -32,15 +32,11 @@ public class MenuGenerator {
 
         String[] games = new String[Server.getGames().size()];
 
-        int i = 0;
+        int counter = 1;
         for (Game s : Server.getGames().values()) {
-            for (int y = i; y < games.length; y++) {
-                if (y > i) {
-                    break;
-                }
-                games[y] = "Game of " + s.getGameType().toString().substring(0,1) + s.getGameType().toString().substring(1).toLowerCase();
-            }
-            i++;
+                games[counter-1] = "Game of " + s.getGameType().toString().substring(0,1) +
+                        s.getGameType().toString().substring(1).toLowerCase();
+            counter++;
         }
 
         MenuInputScanner menu = new MenuInputScanner(games);
