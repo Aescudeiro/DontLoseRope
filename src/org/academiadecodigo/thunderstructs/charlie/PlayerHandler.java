@@ -3,6 +3,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
@@ -58,6 +59,8 @@ public class PlayerHandler implements Runnable {
                 sendChallenge(this);
             }
 
+            PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
+            out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
             System.out.println("WINNER");
             game.gameOver(this);
 
