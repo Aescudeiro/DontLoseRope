@@ -35,7 +35,13 @@ public class MenuGenerator {
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
 
-        return prompt.getUserInput(menuInputScanner);
+        int choice = prompt.getUserInput(menuInputScanner);
+
+        if(choice <= menu.length -1){
+            return choice;
+        }
+
+        return 0;
 
     }
 
@@ -58,7 +64,7 @@ public class MenuGenerator {
 
         int choice = prompt.getUserInput(menu);
 
-        if ( choice == games.length - 2 ) {
+        if ( choice <= games.length - 2 ) {
             return choice;
         }
 
@@ -66,17 +72,20 @@ public class MenuGenerator {
     }
 
     public static Team chooseTeam(Prompt prompt) {
+        System.out.println("entered choose team");
 
         String[] teams = new String[Team.values().length + 1];
 
-        for (int i = 0; i < teams.length; i++) {
+        for (int i = 0; i < teams.length - 1; i++) {
             teams[i] = Team.values()[i].toString();
+            System.out.println(teams[i]);
         }
 
         teams[teams.length - 1] = "Go back";
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
 
+        System.out.println("waiting for user to choose team");
         int choice = prompt.getUserInput(menuInputScanner);
 
         Team[] teamTypes = Team.values();

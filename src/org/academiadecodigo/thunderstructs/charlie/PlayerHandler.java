@@ -5,6 +5,7 @@ import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public class PlayerHandler implements Runnable {
     private Team team;
     private Prompt prompt;
     private Game game;
+    private int gameRoom;
     private boolean quit;
 
     public PlayerHandler(Socket playerSocket) {
@@ -45,10 +47,9 @@ public class PlayerHandler implements Runnable {
             joinPlayerMap();
 
             while (!quit) {
-
                 playerRun();
-
             }
+            exit();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,14 +103,14 @@ public class PlayerHandler implements Runnable {
         out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
 
         System.out.println("WINNER");
-        game.gameOver(this);
-
+        game.gameOver();
+        reset();
     }
 
     public Game chooseGameRoom() {
 
-        int gameRoom = MenuGenerator.joinGame(prompt);
-        Game game = Server.getGames().get(gameRoom);
+        gameRoom = MenuGenerator.joinGame(prompt);
+        game = Server.getGames().get(gameRoom);
 
         while (!game.hasEmptySlots()) {
 
@@ -137,6 +138,19 @@ public class PlayerHandler implements Runnable {
         }
     }
 
+    public void reset() {
+        team = null;
+        game = null;
+    }
+
+    public void exit() throws IOException {
+
+        Server.getPlayers().remove(name);
+        printToPlayer.println(Messages.QUIT);
+        playerSocket.close();
+        Thread.currentThread().interrupt();
+    }
+
     public PrintWriter getOutputStream() {
         return printToPlayer;
     }
@@ -149,11 +163,11 @@ public class PlayerHandler implements Runnable {
         return team;
     }
 
-    public Prompt getPrompt() {
-        return prompt;
+    public int getGameRoom() {
+        return gameRoom;
     }
 
-    public StringInputScanner getStringInputScanner() {
-        return stringInputScanner;
+    public Prompt getPrompt() {
+        return prompt;
     }
 }

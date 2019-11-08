@@ -60,7 +60,7 @@ public class Game {
         return false;
     }
 
-    public void gameOver(PlayerHandler player) {
+    public void gameOver() {
         winner(score);
     }
 
