@@ -28,7 +28,7 @@ public class Server {
             Server server = new Server(new ServerSocket(8080));
 
             Game g1 = new Game(2, GameType.CALC, 1);
-            Game g2 = new Game(2, GameType.WORDS, 1);
+            Game g2 = new Game(3, GameType.WORDS, 1);
 
             games.put(1, g1);
             games.put(2, g2);
@@ -51,12 +51,12 @@ public class Server {
 
             while (serverSocket.isBound()) {
 
-                System.out.println("Waiting for player to join...");
+                System.out.println("Server: Waiting for player to join...");
                 Socket playerSocket = serverSocket.accept();
                 System.out.println(playerSocket.getInetAddress().toString());
                 PlayerHandler playerHandler = new PlayerHandler(playerSocket);
                 s1.submit(playerHandler);
-                System.out.println("New player joined.");
+                System.out.println("Server: New player joined.");
 
             }
 

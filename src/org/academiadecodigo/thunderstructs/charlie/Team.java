@@ -5,8 +5,8 @@ public enum Team {
     RED("Red", 10),
     BLUE("Blue", -10);
 
-    String team;
-    int value;
+    private String team;
+    private int value;
 
     Team(String team, int value) {
 
