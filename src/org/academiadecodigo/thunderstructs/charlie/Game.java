@@ -75,9 +75,11 @@ public class Game {
                     return;
                 }
             }
+            System.out.println("removed game");
         }
 
         Arrays.fill(players, null);
+        //gameFinished = true;
     }
 
     public void checkWord(String word, PlayerHandler playerHandler) {
@@ -112,6 +114,8 @@ public class Game {
     }
 
     public void winner(int score) {
+        // TODO: 08/11/2019 if statement. so it can have different value points thing cant have 15 as points
+
         switch (score) {
             case 0:
                 announceWinner(teams[0]);

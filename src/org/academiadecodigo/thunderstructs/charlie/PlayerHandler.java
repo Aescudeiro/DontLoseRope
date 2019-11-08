@@ -64,7 +64,9 @@ public class PlayerHandler implements Runnable {
 
     public void playerRun() {
 
+        System.out.println("sending menu");
         int menuOption = MenuGenerator.mainMenu(prompt);
+        System.out.println("menu sent");
 
         try {
 
@@ -93,13 +95,22 @@ public class PlayerHandler implements Runnable {
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
         }
 
+        // TODO: 08/11/2019 put timer here
+
         while (game.getScore() > 0 && game.getScore() < 100) {
+            // TODO: 08/11/2019 HARD: make it leave input when game over
             sendChallenge(this);
         }
 
         PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
-        out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
+        System.out.println("going to draw rope");
 
+        if (game.getPlayers()[0] == null) {
+            return;
+        }
+
+        out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
+        System.out.println("drew rope");
         game.gameOver(this);
         reset();
     }
