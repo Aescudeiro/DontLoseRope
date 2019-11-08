@@ -16,12 +16,16 @@ public class Game {
 
     private PlayerHandler[] players;
     private GameType gameType;
+    private Team[] teams = new Team[2];
 
 
-    public Game(int numMaxPlayers, GameType type, int difficulty) {
+    public Game(int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2) {
 
         score = MAX_SCORE / 2;
         activePlayers = 0;
+
+        teams[0] = team1;
+        teams[1] = team2;
 
         this.numMaxPlayers = numMaxPlayers;
         gameType = type;
@@ -91,10 +95,10 @@ public class Game {
     public void winner(int score) {
         switch (score) {
             case 0:
-                announceWinner(Team.BLUE);
+                announceWinner(teams[0]);
                 break;
             case 100:
-                announceWinner(Team.RED);
+                announceWinner(teams[1]);
                 break;
         }
     }
@@ -102,8 +106,15 @@ public class Game {
     public void announceWinner(Team team) {
 
         for (PlayerHandler p : players) {
-            p.getOutputStream().println(Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
+            if(p.getTeam() == team) {
+                p.getOutputStream().println(
+                        Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
+                continue;
+            }
+            p.getOutputStream().println(
+                    Messages.WINNER_ANNOUNCEMENT + " " + team.getTeam());
         }
+
 
     }
 

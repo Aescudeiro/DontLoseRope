@@ -61,6 +61,7 @@ public class PlayerHandler implements Runnable {
 
             PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
             out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
+
             System.out.println("WINNER");
             game.gameOver(this);
 
