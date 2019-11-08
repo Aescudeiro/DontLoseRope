@@ -85,7 +85,7 @@ public class PlayerHandler implements Runnable {
     public void joinGame() throws IOException{
 
         this.game = chooseGameRoom();
-        this.team = MenuGenerator.chooseTeam(prompt);
+        this.team = MenuGenerator.chooseTeam(prompt, game);
 
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
         game.addPlayer(this);

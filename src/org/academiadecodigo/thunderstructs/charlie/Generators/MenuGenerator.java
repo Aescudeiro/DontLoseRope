@@ -71,13 +71,13 @@ public class MenuGenerator {
         return 0;
     }
 
-    public static Team chooseTeam(Prompt prompt) {
+    public static Team chooseTeam(Prompt prompt, Game game) {
         System.out.println("entered choose team");
 
-        String[] teams = new String[Team.values().length + 1];
+        String[] teams = new String[game.getTeams().length + 1];
 
         for (int i = 0; i < teams.length - 1; i++) {
-            teams[i] = Team.values()[i].toString();
+            teams[i] = game.getTeams()[i].toString();
             System.out.println(teams[i]);
         }
 
