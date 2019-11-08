@@ -32,7 +32,6 @@ public class MenuGenerator {
 
         for ( String game : games ){
             game = "Game";
-            System.out.println(game);
         }
 
         MenuInputScanner menu = new MenuInputScanner(games);
