@@ -64,10 +64,12 @@ public class PlayerHandler implements Runnable {
 
             System.out.println(Messages.GAME_FULL);
             gameRoom = MenuGenerator.joinGame(prompt);
+            game = Server.getGames().get(gameRoom);
+            System.out.println("attempting to join game: " + gameRoom);
 
         }
 
-        System.out.println(name + " had space in game " + game.toString());
+        System.out.println(gameRoom + " had space in game " + game.toString());
         return Server.getGames().get(gameRoom);
     }
 

@@ -81,7 +81,7 @@ public class Game {
 
         for (PlayerHandler p : players) {
             if(p == null) {
-                System.err.println(this.toString() + ": has free slots");
+                System.err.println(this.toString() + ": has free slots. room size: " + this.players.length);
                 return true;
             }
         }
