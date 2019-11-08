@@ -2,39 +2,32 @@ package org.academiadecodigo.thunderstructs.charlie.Generators;
 
 public class GFXGenerator {
 
-    public static void drawRope(int score){
+    public static String drawRope(int score){
 
-
-        String firstRope = "";
-        String secondRope = "";
         int score2 = (50 - score) + 50;
 
-        StringBuilder sb = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
+        StringBuilder firstRope = new StringBuilder();
+        StringBuilder secondRope = new StringBuilder();
 
         for(int i = 0; i < score; i++){
-            sb.append("~");
+            firstRope.append("~");
         }
 
         for(int i = 0; i < score2; i++){
-            sb2.append("~");
+            secondRope.append("~");
         }
 
         String s5 = "#################################################################################################################################";
         String s6 = "#                                                                                                                               #";
-        String s7 = "#   BLUE TEAM " + sb.toString() + "||" + sb2.toString() + " RED TEAM   #";
+        String s7 = "#   BLUE TEAM " + firstRope.toString() + "||" + secondRope.toString() + " RED TEAM   #";
         String s8 = "#                                                                                                                               #";
         String s9 = "#################################################################################################################################";
 
-        System.out.println(s5);
-        System.out.println(s6);
-        System.out.println(s7);
-        System.out.println(s8);
-        System.out.println(s9);
+        return s5 + s6 + s7 + s8 + s9;
 
     }
 
-    public static void drawGameTitle(){
+    public static String drawGameTitle(){
 
         StringBuilder sb = new StringBuilder();
 
@@ -50,13 +43,8 @@ public class GFXGenerator {
                 sb.append("'                                                                                                             888                             \n");
                 sb.append("'                                                                                                             888                               ");
 
-        System.err.println(sb.toString());
+        return sb.toString();
 
-    }
-
-    public static void main(String[] args) {
-        drawGameTitle();
-        drawRope(50);
     }
 
 }
