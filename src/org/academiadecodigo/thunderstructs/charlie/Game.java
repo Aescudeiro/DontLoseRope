@@ -1,7 +1,6 @@
 package org.academiadecodigo.thunderstructs.charlie;
 
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
