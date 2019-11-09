@@ -77,29 +77,32 @@ public class Game {
      * Check if there is a team with no elements
      * If, at the last player, one of the teams doesn't have players, this player will be forced to join that team
      *
-     * @return the team that doens't have players
+     * @return an array of available teams to be joined by the player, last index is null allowing for another menu option
      */
-    public Team getEmptyTeam() {
+    public String[] getAvailableTeams() {
 
         int team1 = 0;
         int team2 = 0;
-
-        for(PlayerHandler playerHandler : players) {
-            if(playerHandler.getTeam() == teams[0]){
-                team1++;
-                continue;
+        if(activePlayers > 0){
+            for(int i = 0; i < activePlayers; i++) {
+                if(players[i].getTeam() == teams[0]){
+                    team1++;
+                    continue;
+                }
+                team2++;
             }
-            team2++;
-        }
 
-        if((activePlayers == numMaxPlayers-1) && (team1 == 0 || team2 == 0)) {
-            if(team1 == 0) {
-                return teams[0];
+            String[] team = new String[2];
+            if((activePlayers == numMaxPlayers-1) && (team1 == 0 || team2 == 0)) {
+                if(team1 == 0) {
+                    team[0] = teams[0].toString();
+                    return team;
+                }
+                team[0] = teams[1].toString();
+                return team;
             }
-            return teams[1];
         }
-
-        return null;
+        return new String[]{teams[0].toString(), teams[1].toString(), null};
     }
 
     /**
