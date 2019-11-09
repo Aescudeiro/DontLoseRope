@@ -25,6 +25,7 @@ public class PlayerHandler implements Runnable {
     private Game game;
     private int gameRoom;
     private boolean quit;
+    private String lastAnswer;
 
     public PlayerHandler(Socket playerSocket) {
 
@@ -93,8 +94,6 @@ public class PlayerHandler implements Runnable {
 
         } catch (InterruptedException ie){
             System.err.println("Something went wrong with Count Down");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -127,14 +126,10 @@ public class PlayerHandler implements Runnable {
         return Server.getGames().get(gameRoom);
     }
 
-    public void joinGame() throws InterruptedException, IOException {
+    public void joinGame() throws InterruptedException{
 
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\n");
         game.addPlayer(this);
-
-        // TODO: if a printToPlayers exists, why do we need the following:
-        PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
-
 
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
         }
@@ -143,27 +138,21 @@ public class PlayerHandler implements Runnable {
 
         while (game.getScore() > 0 && game.getScore() < 100) {
             // TODO: 08/11/2019 HARD: make it leave input when game over
-            sendChallenge(this);
             if (game.getPlayers()[0] == null) {
+                reset();
                 return;
             }
+            sendChallenge(this);
         }
 
-        System.out.println("going to draw rope" + name);
-
-
-        // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
-        out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
-        System.out.println("drew rope");
-        game.gameOver(this);
-        reset();
+        winGame();
     }
 
     public Team chooseTeam() {
         return MenuGenerator.chooseTeam(prompt, game);
     }
 
-    // TODO: create new game, allowing other gamers to join this game, maybe set a password for it. Needs a sub-menu asking for game name, type and to choose team allowed in the game created
+    // TODO: create new game, allowing other gamers to join this game, maybe set a password for it. Needs a sub-menu asking for game name, game type, team colors, game difficulty, amount of players.
     public void createNewGame(){
 
     }
@@ -173,13 +162,19 @@ public class PlayerHandler implements Runnable {
         switch (game.getGameType()) {
             case CALC:
                 game.checkEquation(ChallengeGenerator.generateEquation(game.getDifficulty()), player);
-                System.out.println(game.getScore());
                 break;
 
             case WORDS:
                 game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
                 break;
         }
+    }
+
+    public void winGame() {
+        // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
+        printToPlayer.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
+        game.gameOver(this);
+        reset();
     }
 
     public void reset() {

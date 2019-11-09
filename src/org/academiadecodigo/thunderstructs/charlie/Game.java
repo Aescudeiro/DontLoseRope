@@ -90,7 +90,6 @@ public class Game {
         if (playerHandler.getPrompt().getUserInput(ask).equals(word)) {
             updateScore(playerHandler);
         }
-
     }
 
     public void checkEquation(String[] numbers, PlayerHandler playerHandler) {

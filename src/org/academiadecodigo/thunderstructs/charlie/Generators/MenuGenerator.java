@@ -4,7 +4,6 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
 import org.academiadecodigo.thunderstructs.charlie.Game;
-import org.academiadecodigo.thunderstructs.charlie.GameType;
 import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
@@ -12,7 +11,6 @@ import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -62,7 +60,7 @@ public class MenuGenerator {
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
-        menu.setMessage(Messages.JOINGAME);
+        menu.setMessage(Messages.JOIN_GAME);
 
         int choice = prompt.getUserInput(menu);
 
