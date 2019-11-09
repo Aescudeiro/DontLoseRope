@@ -61,14 +61,18 @@ public class PlayerHandler implements Runnable {
 
     }
 
-
+    /**
+     * Add this player to the server players list.
+     */
     public void joinPlayerMap() {
         Server.getPlayers().put(name, this);
     }
 
+    /**
+     * Main menu screen is shown to the player allowing them to choose from the menu options.
+     */
     public void playerRun() {
 
-        System.out.println("sending menu");
         int menuOption = MenuGenerator.mainMenu(prompt);
         System.out.println("menu sent");
 
@@ -98,6 +102,9 @@ public class PlayerHandler implements Runnable {
         }
     }
 
+    /**
+     *
+     */
     public void chooseGameRoom() {
 
         while (team == null) {
@@ -154,22 +161,18 @@ public class PlayerHandler implements Runnable {
         return MenuGenerator.chooseTeam(prompt, game);
     }
 
-    // TODO: create new game, allowing other gamers to join this game, maybe set a password for it. Needs a sub-menu asking for game name, game type, team colors, game difficulty, amount of players.
     public void createNewGame(){
 
         boolean createGame = false;
         Game creatingGame = new Game(null,0, null, 0, null,null,false);
-
-/*        String gameName = "";
-        int playerAmount = 0;
-        Team team1Color = null;
-        Team team2Color = null;
-        GameType gameType = null;
-        int gameDifficulty = 0;*/
+        String currentGameInfo = "Insert game info here (name, maxplayers, type, difficulty, team1color, team2color)";
+        // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         while (!createGame) {
 
             int menuChoice = MenuGenerator.createGameMenu(prompt);
+
+            printToPlayer.println(currentGameInfo);
 
             switch (menuChoice) {
 
@@ -182,10 +185,12 @@ public class PlayerHandler implements Runnable {
 
                 case 1:
                     creatingGame.setName(setGameName());
+                    printToPlayer.println("Game name set to: " + creatingGame.getName());
                     break;
 
                 case 2:
                     creatingGame.setNumMaxPlayers(setPlayerAmount());
+                    printToPlayer.println("Max players set to: " + creatingGame.getNumMaxPlayers());
                     break;
 
                 case 3:
@@ -194,10 +199,12 @@ public class PlayerHandler implements Runnable {
 
                 case 4:
                     creatingGame.setGameType(setGameType());
+                    printToPlayer.println("Game type set to: " + creatingGame.getGameType().toString());
                     break;
 
                 case 5:
-                    creatingGame.setGameDifficulty(setGameDifficulty());
+                    creatingGame.setDifficulty(setGameDifficulty());
+                    printToPlayer.println("Game difficulty set to: " + creatingGame.getDifficulty());
                     break;
             }
         }
@@ -238,11 +245,11 @@ public class PlayerHandler implements Runnable {
                     return;
 
                 case 1:
-                    creatingGame.setTeamColor(creatingGame.getTeams()[0]);
+                    creatingGame.setTeam1(MenuGenerator.setTeamsColor(creatingGame, prompt));
                     break;
 
                 case 2:
-                    creatingGame.setTeamColor(creatingGame.getTeams()[1]);
+                    creatingGame.setTeam2(MenuGenerator.setTeamsColor(creatingGame, prompt));
                     break;
             }
         }
