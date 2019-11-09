@@ -19,12 +19,14 @@ public class Game {
     private int difficulty;
     private boolean fixedGame;
 
+    private String name;
+
     private Team[] teams;
     private PlayerHandler[] players;
     private GameType gameType;
 
 
-    public Game(int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean fixed) {
+    public Game(String name, int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean fixed) {
 
         fixedGame = fixed;
         score = MAX_SCORE / 2;
@@ -34,6 +36,7 @@ public class Game {
         teams[0] = team1;
         teams[1] = team2;
 
+        this.name = name;
         this.numMaxPlayers = numMaxPlayers;
         gameType = type;
         this.difficulty = difficulty;
@@ -149,8 +152,7 @@ public class Game {
     }
 
     /**
-     *
-     *
+     * Check winner team
      */
 
     public void winner() {
@@ -163,6 +165,14 @@ public class Game {
         announceWinner(teams[1]);
     }
 
+    /**
+     * Broadcast final message:
+     *
+     * You won for the winning team;
+     * Game Over for the losing team;
+     *
+     * @param team reference for the winning team
+     */
     public void announceWinner(Team team) {
 
         for (PlayerHandler playerHandler : players) {
@@ -179,6 +189,9 @@ public class Game {
 
     }
 
+    /**
+     * Resets actual room (if the game instance is fixed)
+     */
     public void resetGameRoom() {
         score = MAX_SCORE / 2;
         activePlayers = 0;
@@ -218,4 +231,7 @@ public class Game {
         return teams;
     }
 
+    public String getName() {
+        return name;
+    }
 }
