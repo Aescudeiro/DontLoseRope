@@ -31,39 +31,39 @@ public class Client {
     public void chat() {
 
 
-            Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
-            Thread readMessage = new Thread(new Runnable() {
-                @Override
-                public void run() {
+        Thread readMessage = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                    String msg;
-                    while (true) {
+                String msg;
+                while (true) {
 
-                        try {
+                    try {
 
-                            // read the message sent to this client
-                            while((msg = in.readLine()) != null){
-                                System.out.println(msg);
-                            }
-                        } catch (IOException e) {
-
-                            System.err.println("Connection terminated");
-                            break;
+                        // read the message sent to this client
+                        while ((msg = in.readLine()) != null) {
+                            System.out.println(msg + " ");
                         }
+                    } catch (IOException e) {
+
+                        System.err.println("Connection terminated");
+                        break;
                     }
                 }
-            });
-
-            readMessage.start();
-
-            // sendMessage thread
-            while (true) {
-
-                String msg = input.nextLine();
-                out.println(msg);
-
             }
+        });
+
+        readMessage.start();
+
+        // sendMessage thread
+        while (true) {
+
+            String msg = input.nextLine();
+            out.println(msg);
+
+        }
 
     }
 
