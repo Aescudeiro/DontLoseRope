@@ -1,5 +1,7 @@
 package org.academiadecodigo.thunderstructs.charlie;
 
+import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,6 +47,12 @@ public class Client {
                         // read the message sent to this client
                         while ((msg = in.readLine()) != null) {
                             System.out.println(msg + " ");
+                            if(msg.contains(Color.ANSI_BLUE + "Thanks " + Color.ANSI_RED + "for " + Color.ANSI_GREEN +
+                                    "playing!")) {
+                                in.close();
+                                out.close();
+                                System.exit(0);
+                            }
                         }
                     } catch (IOException e) {
 
