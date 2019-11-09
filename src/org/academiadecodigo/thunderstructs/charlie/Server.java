@@ -28,13 +28,17 @@ public class Server {
 
             Server server = new Server(new ServerSocket(8080));
 
-            Game g1 = new Game("Static Calc",2, GameType.CALC, 1, Team.RED, Team.GREEN, true);
-            Game g2 = new Game("Static Words",2, GameType.WORDS, 1, Team.YELLOW, Team.BLUE, true);
-            Game g4 = new Game("Not static Calc",2, GameType.CALC, 2, Team.RED, Team.BLUE, false);
+            Game g1 = new Game("2 Player calculation game (Difficulty 1)",2, GameType.CALC, 1, Team.RED, Team.GREEN, true);
+            Game g2 = new Game("4 Player calculation game (Difficulty 4)",4, GameType.CALC, 4, Team.YELLOW, Team.BLUE, true);
+            Game g3 = new Game("2 Player word game (Difficulty 2)",2, GameType.CALC, 2, Team.YELLOW, Team.BLUE, true);
+            Game g4 = new Game("8 Player word game (Difficulty 4)",8, GameType.CALC, 4, Team.YELLOW, Team.BLUE, true);
+            Game g5 = new Game("Make this a random challenge",2, GameType.CALC, 2, Team.RED, Team.BLUE, false);
 
-            games.put(3, g4);
             games.put(1, g1);
             games.put(2, g2);
+            games.put(3, g3);
+            games.put(4, g3);
+            games.put(5, g3);
 
             server.init();
 

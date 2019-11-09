@@ -47,12 +47,13 @@ public class MenuGenerator {
 
     public static int joinGame(Prompt prompt) {
 
+        // TODO: 09/11/2019 add dynamic player number to game (gamename [players/maxplayers])
+
         String[] games = new String[Server.getGames().size() + 1];
 
-        int counter = 1;
-        for (Game s : Server.getGames().values()) {
-            games[counter - 1] = s.getGameType().toString().substring(0, 1) +
-                    s.getGameType().toString().substring(1).toLowerCase() + " game";
+        int counter = 0;
+        for (Game game : Server.getGames().values()) {
+            games[counter] = game.getName();
             counter++;
         }
 
@@ -63,7 +64,7 @@ public class MenuGenerator {
 
         int choice = prompt.getUserInput(menu);
 
-        if (choice < games.length - 1) {
+        if (choice < games.length) {
             return choice;
         }
 
@@ -79,11 +80,11 @@ public class MenuGenerator {
 
         int choice = prompt.getUserInput(menuInputScanner);
 
-        if (choice == menu.length - 2) {
+        if (choice == menu.length - 1) {
             return -1;
         }
 
-        if (choice <= menu.length - 1) {
+        if (choice < menu.length - 1) {
             return choice;
         }
 
@@ -127,7 +128,7 @@ public class MenuGenerator {
 
         int choice = prompt.getUserInput(menuInputScanner);
 
-        if (choice < teams.length - 1){
+        if (choice < teams.length){
             return choice;
         }
 

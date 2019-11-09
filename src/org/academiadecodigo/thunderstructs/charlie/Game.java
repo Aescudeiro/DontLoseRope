@@ -36,9 +36,9 @@ public class Game {
         teams[0] = team1;
         teams[1] = team2;
 
+        gameType = type;
         this.name = name;
         this.numMaxPlayers = numMaxPlayers;
-        gameType = type;
         this.difficulty = difficulty;
 
         players = new PlayerHandler[numMaxPlayers];
@@ -230,10 +230,19 @@ public class Game {
         Arrays.fill(players, null);
     }
 
-
     @Override
     public String toString() {
-        return gameType.toString();
+        return "Game{" +
+                "score=" + score +
+                ", activePlayers=" + activePlayers +
+                ", numMaxPlayers=" + numMaxPlayers +
+                ", difficulty=" + difficulty +
+                ", fixedGame=" + fixedGame +
+                ", name='" + name + '\'' +
+                ", teams=" + Arrays.toString(teams) +
+                ", players=" + Arrays.toString(players) +
+                ", gameType=" + gameType +
+                '}';
     }
 
     /**
@@ -276,6 +285,10 @@ public class Game {
         this.numMaxPlayers = numMaxPlayers;
     }
 
+    public void setPlayers(int numMaxPlayers) {
+        this.players = new PlayerHandler[numMaxPlayers];
+    }
+
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
@@ -295,4 +308,6 @@ public class Game {
     public void setTeam2(Team team) {
         teams[1] = team;
     }
+
+
 }

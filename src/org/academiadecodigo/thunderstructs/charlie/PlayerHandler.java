@@ -26,7 +26,7 @@ public class PlayerHandler implements Runnable {
     private Game game;
     private int gameRoom;
     private boolean quit;
-    private String lastAnswer;
+    private String currentGameInfo = "";
 
     public PlayerHandler(Socket playerSocket) {
 
@@ -74,7 +74,7 @@ public class PlayerHandler implements Runnable {
     public void playerRun() {
 
         int menuOption = MenuGenerator.mainMenu(prompt);
-        System.out.println("menu sent");
+        System.out.println("menu sent, option: " + menuOption);
 
         try {
 
@@ -137,7 +137,7 @@ public class PlayerHandler implements Runnable {
 
     public void joinGame() throws InterruptedException{
 
-        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\n");
+        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\nWaiting for players...\n");
         game.addPlayer(this);
 
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
@@ -165,11 +165,13 @@ public class PlayerHandler implements Runnable {
 
         boolean createGame = false;
         Game creatingGame = new Game(null,0, null, 0, null,null,false);
-        String currentGameInfo = "Insert game info here (name, maxplayers, type, difficulty, team1color, team2color)";
+        currentGameInfo = creatingGame.toString();
+        System.out.println(currentGameInfo);
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         while (!createGame) {
 
+            System.out.println("entered creategame loop");
             int menuChoice = MenuGenerator.createGameMenu(prompt);
 
             printToPlayer.println(currentGameInfo);
@@ -209,7 +211,7 @@ public class PlayerHandler implements Runnable {
             }
         }
 
-        //Game creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
+        creatingGame.setPlayers(creatingGame.getNumMaxPlayers());
         Server.getGames().put(Server.getGames().size() + 1, creatingGame);
 
     }
