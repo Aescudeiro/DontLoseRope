@@ -37,8 +37,8 @@ public class Server {
             games.put(1, g1);
             games.put(2, g2);
             games.put(3, g3);
-            games.put(4, g3);
-            games.put(5, g3);
+            games.put(4, g4);
+            games.put(5, g5);
 
             server.init();
 
