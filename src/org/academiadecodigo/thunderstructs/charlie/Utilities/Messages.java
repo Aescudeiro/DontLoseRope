@@ -11,6 +11,8 @@ public class Messages {
     public static final String JOIN_GAME = Color.ANSI_GREEN + "Choose a game type" + MENU_LINE + Color.ANSI_RESET;
     public static final String CREATE_MENU = Color.ANSI_GREEN + "Create Game Menu" + MENU_LINE + Color.ANSI_RESET;
     public static final String CHOOSE_TEAM = Color.ANSI_GREEN + "Choose Team Color" + MENU_LINE + Color.ANSI_RESET;
+    public static final String CHOOSE_TYPE = Color.ANSI_GREEN + "Choose Game Type" + MENU_LINE + Color.ANSI_RESET;
+    public static final String CHOOSE_DIFFICULTY = Color.ANSI_GREEN + "Choose Game Difficulty" + MENU_LINE + Color.ANSI_RESET;
 
     public static final String CORRECT_ANSWER = "Your answer was correct!";
     public static final String WRONG_ANSWER = "Your answer was wrong...";
