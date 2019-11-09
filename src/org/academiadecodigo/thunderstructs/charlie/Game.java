@@ -78,8 +78,8 @@ public class Game {
             System.out.println("removed game");
         }
 
-        Arrays.fill(players, null);
-        //gameFinished = true;
+        resetGameRoom();
+
     }
 
     public void checkWord(String word, PlayerHandler playerHandler) {
@@ -143,6 +143,12 @@ public class Game {
 
     }
 
+    public void resetGameRoom() {
+        score = MAX_SCORE/2;
+        activePlayers = 0;
+        Arrays.fill(players, null);
+    }
+
     @Override
     public String toString() {
         return gameType.toString();
@@ -175,4 +181,5 @@ public class Game {
     public Team[] getTeams() {
         return teams;
     }
+
 }

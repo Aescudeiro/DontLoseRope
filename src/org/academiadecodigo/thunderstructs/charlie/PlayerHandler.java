@@ -89,6 +89,7 @@ public class PlayerHandler implements Runnable {
         this.game = chooseGameRoom();
         this.team = MenuGenerator.chooseTeam(prompt, game);
 
+
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
         game.addPlayer(this);
 
@@ -100,15 +101,14 @@ public class PlayerHandler implements Runnable {
         while (game.getScore() > 0 && game.getScore() < 100) {
             // TODO: 08/11/2019 HARD: make it leave input when game over
             sendChallenge(this);
+            if (game.getPlayers()[0] == null) {
+                return;
+            }
         }
+
+        System.out.println("going to draw rope" + name);
 
         PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
-        System.out.println("going to draw rope");
-
-        if (game.getPlayers()[0] == null) {
-            return;
-        }
-
         out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
         System.out.println("drew rope");
         game.gameOver(this);
@@ -119,9 +119,11 @@ public class PlayerHandler implements Runnable {
 
         gameRoom = MenuGenerator.joinGame(prompt);
         game = Server.getGames().get(gameRoom);
+        System.out.println("\n Game slots: " + game.getPlayers().length);
 
         while (!game.hasEmptySlots()) {
 
+            System.out.println("\n Game is full" + game.getPlayers().length);
             printToPlayer.println(Messages.GAME_FULL);
             gameRoom = MenuGenerator.joinGame(prompt);
             game = Server.getGames().get(gameRoom);
