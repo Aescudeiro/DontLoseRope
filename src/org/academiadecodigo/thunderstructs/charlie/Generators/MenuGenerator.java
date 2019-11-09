@@ -24,7 +24,7 @@ public class MenuGenerator {
 
         PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
 
-        printWriter.println(GFXGenerator.drawGameTitle() + Messages.WELCOME);
+        printWriter.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
 
         return input.nextLine();
 
@@ -32,7 +32,7 @@ public class MenuGenerator {
 
     public static int mainMenu(Prompt prompt) {
 
-        String[] menu = {"Join game","Quit"};
+        String[] menu = {"Join game", "Create game", "How to play", "Quit"};
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
         menuInputScanner.setMessage(Messages.MAIN_MENU);

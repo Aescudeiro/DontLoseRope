@@ -8,6 +8,10 @@ public class GFXGenerator {
     private static final String CLEAR_SPACE = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
             "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
+    public static String clearScreen(){
+        return CLEAR_SPACE;
+    }
+
     public static String drawRope(int score, Team t1, Team t2){
 
         int score2 = (50 - score) + 50;
@@ -39,11 +43,10 @@ public class GFXGenerator {
     }
 
     private static String setTeamSpacing(String team){
+
         String spacing = "";
-        for(int i = 0; i < (16 - team.length()); i++){
-            spacing += " ";
-        }
-        return spacing;
+        return spacing.repeat(16 - team.length());
+
     }
 
     public static String drawGameTitle(){
@@ -101,6 +104,14 @@ public class GFXGenerator {
 
         return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
 
+    }
+
+    public static String showGameInstructions(){
+        return null;
+    }
+
+    public static String drawCountDown(int count){
+        return null;
     }
 
 }

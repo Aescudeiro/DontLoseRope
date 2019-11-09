@@ -78,12 +78,20 @@ public class PlayerHandler implements Runnable {
                 case 1:
                     chooseGameRoom();
                     break;
+                case 2:
+                    createNewGame();
+                    break;
+                case 3:
+                    printToPlayer.println(GFXGenerator.showGameInstructions());
+                    break;
             }
 
             if (game != null) {
                 joinGame();
             }
 
+        } catch (InterruptedException ie){
+            System.err.println("Something went wrong with Count Down");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,15 +126,19 @@ public class PlayerHandler implements Runnable {
         return Server.getGames().get(gameRoom);
     }
 
-    public void joinGame() throws IOException {
+    public void joinGame() throws InterruptedException, IOException {
 
-        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
+        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\n");
         game.addPlayer(this);
+
+        // TODO: if a printToPlayers exists, why do we need the following:
+        PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
+
 
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
         }
 
-        // TODO: 08/11/2019 put timer here
+        startCountDown(printToPlayer);
 
         while (game.getScore() > 0 && game.getScore() < 100) {
             // TODO: 08/11/2019 HARD: make it leave input when game over
@@ -138,16 +150,21 @@ public class PlayerHandler implements Runnable {
 
         System.out.println("going to draw rope" + name);
 
-        PrintWriter out = new PrintWriter(playerSocket.getOutputStream());
+
+        // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
         out.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
         System.out.println("drew rope");
         game.gameOver(this);
         reset();
     }
 
-
     public Team chooseTeam() {
         return MenuGenerator.chooseTeam(prompt, game);
+    }
+
+    // TODO: create new game, allowing other gamers to join this game, maybe set a password for it. Needs a sub-menu asking for game name, type and to choose team allowed in the game created
+    public void createNewGame(){
+
     }
 
     public void sendChallenge(PlayerHandler player) {
@@ -175,6 +192,33 @@ public class PlayerHandler implements Runnable {
         Server.getPlayers().remove(name);
         playerSocket.close();
         Thread.currentThread().interrupt();
+    }
+
+    private void startCountDown(PrintWriter printToPlayer) throws InterruptedException {
+
+        for (int i = 0; i < 4; i++){
+
+            switch(i){
+                case 0:
+                    printToPlayer.println(GFXGenerator.drawCountDown(4));
+                    Thread.sleep(1000);
+                    break;
+                case 1:
+                    printToPlayer.println(GFXGenerator.drawCountDown(3));
+                    Thread.sleep(1000);
+                    break;
+                case 2:
+                    printToPlayer.println(GFXGenerator.drawCountDown(2));
+                    Thread.sleep(1000);
+                    break;
+                case 3:
+                    printToPlayer.println(GFXGenerator.drawCountDown(1));
+                    Thread.sleep(1000);
+                    break;
+            }
+
+        }
+
     }
 
     public PrintWriter getOutputStream() {
