@@ -51,6 +51,7 @@ public class PlayerHandler implements Runnable {
             }
             exit();
 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,8 +76,12 @@ public class PlayerHandler implements Runnable {
                     quit = true;
                     break;
                 case 1:
-                    joinGame();
+                    chooseGameRoom();
                     break;
+            }
+
+            if (game != null) {
+                joinGame();
             }
 
         } catch (IOException e) {
@@ -84,11 +89,36 @@ public class PlayerHandler implements Runnable {
         }
     }
 
+    public void chooseGameRoom() {
+
+        while (team == null) {
+
+            if ((game = gameToEnter()) == null) {
+                return;
+            }
+
+            if (!game.hasEmptySlots()) {
+                System.err.println("\n Game is full" + game.getPlayers().length);
+                printToPlayer.println(Messages.GAME_FULL);
+                continue;
+            }
+
+            System.out.println(gameRoom + " had space in game " + game.toString());
+            team = chooseTeam();
+        }
+    }
+
+    public Game gameToEnter() {
+
+        gameRoom = MenuGenerator.joinGame(prompt);
+        if (gameRoom == 0) {
+            return null;
+        }
+
+        return Server.getGames().get(gameRoom);
+    }
+
     public void joinGame() throws IOException {
-
-        this.game = chooseGameRoom();
-        this.team = MenuGenerator.chooseTeam(prompt, game);
-
 
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.");
         game.addPlayer(this);
@@ -115,23 +145,9 @@ public class PlayerHandler implements Runnable {
         reset();
     }
 
-    public Game chooseGameRoom() {
 
-        gameRoom = MenuGenerator.joinGame(prompt);
-        game = Server.getGames().get(gameRoom);
-        System.out.println("\n Game slots: " + game.getPlayers().length);
-
-        while (!game.hasEmptySlots()) {
-
-            System.out.println("\n Game is full" + game.getPlayers().length);
-            printToPlayer.println(Messages.GAME_FULL);
-            gameRoom = MenuGenerator.joinGame(prompt);
-            game = Server.getGames().get(gameRoom);
-
-        }
-
-        System.out.println(gameRoom + " had space in game " + game.toString());
-        return Server.getGames().get(gameRoom);
+    public Team chooseTeam() {
+        return MenuGenerator.chooseTeam(prompt, game);
     }
 
     public void sendChallenge(PlayerHandler player) {
@@ -155,8 +171,8 @@ public class PlayerHandler implements Runnable {
 
     public void exit() throws IOException {
 
-        Server.getPlayers().remove(name);
         printToPlayer.println(Messages.QUIT);
+        Server.getPlayers().remove(name);
         playerSocket.close();
         Thread.currentThread().interrupt();
     }

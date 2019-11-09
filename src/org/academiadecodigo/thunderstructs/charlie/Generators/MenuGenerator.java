@@ -7,6 +7,7 @@ import org.academiadecodigo.thunderstructs.charlie.Game;
 import org.academiadecodigo.thunderstructs.charlie.GameType;
 import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
+import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +24,7 @@ public class MenuGenerator {
 
         PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
 
-        printWriter.println(GFXGenerator.drawGameTitle() + "\n WELCOME PLAYER! Please insert your name: ");
+        printWriter.println(GFXGenerator.drawGameTitle() + Messages.WELCOME);
 
         return input.nextLine();
 
@@ -34,6 +35,7 @@ public class MenuGenerator {
         String[] menu = {"Join game","Quit"};
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
+        menuInputScanner.setMessage(Messages.MAIN_MENU);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
@@ -60,7 +62,7 @@ public class MenuGenerator {
 
         MenuInputScanner menu = new MenuInputScanner(games);
 
-        menu.setMessage("Choose your game: ");
+        menu.setMessage(Messages.JOINGAME);
 
         int choice = prompt.getUserInput(menu);
 
