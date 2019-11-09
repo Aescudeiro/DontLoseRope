@@ -28,9 +28,9 @@ public class Server {
 
             Server server = new Server(new ServerSocket(8080));
 
-            Game g1 = new Game(2, GameType.CALC, 1, Team.RED, Team.GREEN, true);
-            Game g2 = new Game(4, GameType.WORDS, 2, Team.YELLOW, Team.BLUE, true);
-            Game g4 = new Game(2, GameType.CALC, 2, Team.RED, Team.BLUE, false);
+            Game g1 = new Game("Static Calc",2, GameType.CALC, 1, Team.RED, Team.GREEN, true);
+            Game g2 = new Game("Static Words",2, GameType.WORDS, 1, Team.YELLOW, Team.BLUE, true);
+            Game g4 = new Game("Not static Calc",2, GameType.CALC, 2, Team.RED, Team.BLUE, false);
 
             games.put(3, g4);
             games.put(1, g1);
