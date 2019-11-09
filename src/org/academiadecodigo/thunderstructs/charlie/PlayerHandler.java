@@ -157,12 +157,52 @@ public class PlayerHandler implements Runnable {
     public void createNewGame(){
 
         boolean createGame = false;
-        boolean goBack = false;
-/*        while (!createGame || !goBack) {
+        Game creatingGame = new Game(0, null, 0, null,null,false);
 
-            gameToCreate(MenuGenerator.createGame());
+        String gameName = "";
+        int playerAmount = 0;
+        Team team1Color = null;
+        Team team2Color = null;
+        GameType gameType = null;
+        int gameDifficulty = 0;
 
-        }*/
+        while (!createGame) {
+
+            int menuChoice = MenuGenerator.createGameMenu();
+
+            switch (menuChoice) {
+
+                case -1:
+                    createGame = true;
+                    break;
+
+                case 0:
+                    return;
+
+                case 1:
+                    setGameName();
+                    break;
+
+                case 2:
+                    setPlayerAmount();
+                    break;
+
+                case 3:
+                    setTeamColors();
+                    break;
+
+                case 4:
+                    setGameType();
+                    break;
+
+                case 5:
+                    setGameDifficulty();
+                    break;
+            }
+
+        creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
+
+        }
 
     }
 
