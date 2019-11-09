@@ -89,6 +89,7 @@ public class MenuGenerator {
 
         return 0;
     }
+
     public static String setGameName(Socket playerSocket) throws IOException {
 
         Scanner input = new Scanner(playerSocket.getInputStream());
@@ -117,6 +118,22 @@ public class MenuGenerator {
 
     }
 
+    public static int selectTeam(Prompt prompt){
+
+        String[] teams = {"TEAM ONE","TEAM TWO","Go back"};
+
+        MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
+        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SELECT_TEAM);
+
+        int choice = prompt.getUserInput(menuInputScanner);
+
+        if (choice < teams.length - 1){
+            return choice;
+        }
+
+        return 0;
+    }
+
     public static Team setTeamsColor(Game game, Prompt prompt) {
 
         Set<Team> teams = new HashSet<>(Arrays.asList(Team.values()));
@@ -133,7 +150,7 @@ public class MenuGenerator {
         choices[choices.length - 1] = "Go back";
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(choices);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CHOOSE_TEAM);
+        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_TEAM_COLOR);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
@@ -156,7 +173,7 @@ public class MenuGenerator {
         menu[menu.length - 1] = "Go back";
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CHOOSE_TYPE);
+        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_GAME_TYPE);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
@@ -174,7 +191,7 @@ public class MenuGenerator {
         String[] menu = {"1" , "2", "3", "4", "Go back"};
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CHOOSE_DIFFICULTY);
+        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_DIFFICULTY);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
@@ -197,7 +214,7 @@ public class MenuGenerator {
         teams[teams.length - 1] = "Go back";
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CHOOSE_TEAM);
+        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_TEAM_COLOR);
 
         int choice = prompt.getUserInput(menuInputScanner);
 

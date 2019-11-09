@@ -74,6 +74,35 @@ public class Game {
     }
 
     /**
+     * Check if there is a team with no elements
+     * If, at the last player, one of the teams doesn't have players, this player will be forced to join that team
+     *
+     * @return the team that doens't have players
+     */
+    public Team getEmptyTeam() {
+
+        int team1 = 0;
+        int team2 = 0;
+
+        for(PlayerHandler playerHandler : players) {
+            if(playerHandler.getTeam() == teams[0]){
+                team1++;
+                continue;
+            }
+            team2++;
+        }
+
+        if((activePlayers == numMaxPlayers-1) && (team1 == 0 || team2 == 0)) {
+            if(team1 == 0) {
+                return teams[0];
+            }
+            return teams[1];
+        }
+
+        return null;
+    }
+
+    /**
      * End game screen and game room resetter:
      *
      * If game is fixed, resets game room;
