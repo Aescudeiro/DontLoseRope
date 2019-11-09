@@ -5,7 +5,11 @@ import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 
 import java.util.Arrays;
 
-
+/**
+ * This class represents the different game rooms.
+ * Pre-created game rooms are fixed and reseted after the match is over.
+ * Custom game rooms (created by users) are not fixed, and will be deleted after the match is over.
+ */
 public class Game {
 
     private static final int MAX_SCORE = 100;
@@ -38,7 +42,11 @@ public class Game {
 
     }
 
-
+    /**
+     * Add player to the players[]
+     *
+     * @param player Player reference to be added
+     */
     public synchronized void addPlayer(PlayerHandler player) {
 
         if (activePlayers < numMaxPlayers) {
@@ -52,21 +60,28 @@ public class Game {
         System.out.println("This room (" + this.toString() + ") is full");
     }
 
+    /**
+     * Check if game room has empty slots
+     *
+     * @return true if has game has PlayerHandler[] is not filled (has empty slots)
+     */
+    //TODO: Refactor name
     public boolean hasEmptySlots() {
-
-        for (PlayerHandler playerHandler : players) {
-            if (playerHandler == null) {
-                System.err.println(this.toString() + ": has free slots. room size: " + this.players.length);
-                return true;
-            }
-        }
-        System.err.println(this.toString() + ": slots are full");
-        return false;
+        return (numMaxPlayers - activePlayers) != 0;
     }
 
+    /**
+     * End game screen and game room resetter:
+     *
+     * If game is fixed, resets game room;
+     * If game is not fixed, deletes room from Server's games HashMap;
+     *
+     * @param playerHandler Player reference that scored the final points
+     */
+    //TODO: Refactor name
     public void gameOver(PlayerHandler playerHandler) {
 
-        winner(score);
+        winner();
 
         if (!fixedGame) {
             for (Game game : Server.getGames().values()) {
@@ -82,20 +97,32 @@ public class Game {
 
     }
 
+    /**
+     * Check if player answer (word) is correct
+     *
+     * @param word correct answer to the challenge (to be compared to player answer)
+     * @param playerHandler reference of the player that answered
+     */
     public void checkWord(String word, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + word + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + word + " = ?? \n");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(word)) {
             updateScore(playerHandler);
         }
     }
 
+    /**
+     * Check if player answer (number) is correct
+     *
+     * @param numbers String[] that contains the equation (numbers[0]) and the answer (numbers[1])
+     * @param playerHandler reference of the player that answered
+     */
     public void checkEquation(String[] numbers, PlayerHandler playerHandler) {
 
         StringInputScanner ask = new StringInputScanner();
-        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + numbers[0] + " = ");
+        ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + numbers[0] + " = ?? \n");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(numbers[1])) {
             //score += playerHandler.getTeam().getValue();
@@ -103,27 +130,37 @@ public class Game {
         }
     }
 
-    public void updateScore(PlayerHandler playerHandler) {
-        if(playerHandler.getTeam() == teams[0]) {
-            score -= Server.TEAM_SCORE;
+    /**
+     * Updates the score if the player answer is correct
+     *
+     * @param playerHandler reference of the player that answered
+     */
+    public synchronized void updateScore(PlayerHandler playerHandler) {
 
+        int points = teams.length * Server.TEAM_SCORE / numMaxPlayers;
+
+        if (playerHandler.getTeam() == teams[0]) {
+            score -= points;
+            System.out.println(score);
             return;
         }
-        score += Server.TEAM_SCORE;
+        score += points;
+        System.out.println(score);
     }
 
-    public void winner(int score) {
-        // TODO: 08/11/2019 if statement. so it can have different value points thing cant have 15 as points
+    /**
+     *
+     *
+     */
 
-        switch (score) {
-            case 0:
-                announceWinner(teams[0]);
-                break;
-            case 100:
-                announceWinner(teams[1]);
+    public void winner() {
 
-                break;
+        if (score <= 0) {
+            announceWinner(teams[0]);
+            return;
         }
+
+        announceWinner(teams[1]);
     }
 
     public void announceWinner(Team team) {
@@ -143,7 +180,7 @@ public class Game {
     }
 
     public void resetGameRoom() {
-        score = MAX_SCORE/2;
+        score = MAX_SCORE / 2;
         activePlayers = 0;
         Arrays.fill(players, null);
     }
