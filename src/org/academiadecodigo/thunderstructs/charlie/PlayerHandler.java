@@ -158,14 +158,14 @@ public class PlayerHandler implements Runnable {
     public void createNewGame(){
 
         boolean createGame = false;
-        //Game creatingGame = new Game(null,0, null, 0, null,null,false);
+        Game creatingGame = new Game(null,0, null, 0, null,null,false);
 
-        String gameName = "";
+/*        String gameName = "";
         int playerAmount = 0;
         Team team1Color = null;
         Team team2Color = null;
         GameType gameType = null;
-        int gameDifficulty = 0;
+        int gameDifficulty = 0;*/
 
         while (!createGame) {
 
@@ -181,28 +181,29 @@ public class PlayerHandler implements Runnable {
                     return;
 
                 case 1:
-                    gameName = setGameName();
+                    creatingGame.setName(setGameName());
                     break;
 
                 case 2:
-                    playerAmount = setPlayerAmount();
+                    creatingGame.setNumMaxPlayers(setPlayerAmount());
                     break;
 
                 case 3:
-                    selectTeam();
+                    selectTeam(creatingGame);
                     break;
 
                 case 4:
-                    gameType = setGameType();
+                    creatingGame.setGameType(setGameType());
                     break;
 
                 case 5:
-                    gameDifficulty = setGameDifficulty();
+                    creatingGame.setGameDifficulty(setGameDifficulty());
                     break;
             }
         }
 
-        Game creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
+        //Game creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
+        Server.getGames().put(Server.getGames().size() + 1, creatingGame);
 
     }
 
@@ -226,8 +227,25 @@ public class PlayerHandler implements Runnable {
         return 0;
     }
 
-    private void selectTeam() {
+    private void selectTeam(Game creatingGame) {
 
+        while (true) {
+
+            int selectedTeam = MenuGenerator.selectTeam(prompt);
+
+            switch (selectedTeam) {
+                case 0:
+                    return;
+
+                case 1:
+                    creatingGame.setTeamColor(creatingGame.getTeams()[0]);
+                    break;
+
+                case 2:
+                    creatingGame.setTeamColor(creatingGame.getTeams()[1]);
+                    break;
+            }
+        }
     }
 
     private GameType setGameType() {
