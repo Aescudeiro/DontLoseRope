@@ -9,6 +9,8 @@ public class Messages {
     public static final String MAIN_MENU = Color.ANSI_GREEN + "Main menu" + MENU_LINE + Color.ANSI_RESET;
     public static final String WELCOME = Color.ANSI_GREEN + "\nWELCOME PLAYER! Please insert your name: " + Color.ANSI_RESET;
     public static final String JOIN_GAME = Color.ANSI_GREEN + "Choose a game type" + MENU_LINE + Color.ANSI_RESET;
+    public static final String CREATE_MENU = Color.ANSI_GREEN + "Create Game Menu" + MENU_LINE + Color.ANSI_RESET;
+    public static final String CHOOSE_TEAM = Color.ANSI_GREEN + "Choose Team Color" + MENU_LINE + Color.ANSI_RESET;
 
     public static final String CORRECT_ANSWER = "Your answer was correct!";
     public static final String WRONG_ANSWER = "Your answer was wrong...";
