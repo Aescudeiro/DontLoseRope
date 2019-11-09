@@ -3,6 +3,8 @@ package org.academiadecodigo.thunderstructs.charlie.Generators;
 import org.academiadecodigo.thunderstructs.charlie.Team;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 
+enum Edge { TOP, BOTTOM; }
+
 public class GFXGenerator {
 
     private static final String CLEAR_SPACE = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
@@ -32,19 +34,17 @@ public class GFXGenerator {
             secondRope.append("~");
         }
 
-        String s5 = " ########################################################################################################################################\n";
-        String s6 = " #                                                                                                                                      #\n";
-        String s7 = " #" + t1.getColor() + team1 + Color.ANSI_RESET + t2.getColor() + firstRope.toString() + Color.ANSI_RESET + "||" + t1.getColor() + secondRope.toString() + Color.ANSI_RESET + t2.getColor() + team2 + Color.ANSI_RESET + "#\n";
-        String s8 = " #                                                                                                                                      #\n";
-        String s9 = " ########################################################################################################################################\n";
+        String content = " #" + t1.getColor() + team1 + Color.ANSI_RESET + t2.getColor() + firstRope.toString() +
+                Color.ANSI_RESET + "||" + t1.getColor() + secondRope.toString() + Color.ANSI_RESET +
+                t2.getColor() + team2 + Color.ANSI_RESET + "#\n";
 
-        return CLEAR_SPACE + drawGameTitle() + s5 + s6 + s7 + s8 + s9;
+        return CLEAR_SPACE + drawGameTitle() + bannerEdge(Edge.TOP) + content + bannerEdge(Edge.BOTTOM);
 
     }
 
     private static String setTeamSpacing(String team){
 
-        String spacing = "";
+        String spacing = " ";
         return spacing.repeat(16 - team.length());
 
     }
@@ -69,38 +69,38 @@ public class GFXGenerator {
 
     }
 
-    public static String drawGameOver(String c, int score, Team t1, Team t2){
+    public static String drawGameOver(String color, int score, Team t1, Team t2){
 
         StringBuilder sb = new StringBuilder();
 
-        String color = c;
+        String c = color;
 
-            sb.append(color + "                  .d8888b.         d8888 888b     d888 8888888888       .d88888b.  888     888 8888888888 8888888b.\n");
-            sb.append(color + "                  d88P  Y88b       d88888 8888b   d8888 888             d88P\" \"Y88b 888     888 888        888   Y88b\n");
-            sb.append(color + "                  888    888      d88P888 88888b.d88888 888             888     888 888     888 888        888    888\n");
-            sb.append(color + "                  888            d88P 888 888Y88888P888 8888888         888     888 Y88b   d88P 8888888    888   d88P\n");
-            sb.append(color + "                  888  88888    d88P  888 888 Y888P 888 888             888     888  Y88b d88P  888        8888888P\"\n");
-            sb.append(color + "                  888    888   d88P   888 888  Y8P  888 888             888     888   Y88o88P   888        888 T88b\n");
-            sb.append(color + "                  Y88b  d88P  d8888888888 888   \"   888 888             Y88b. .d88P    Y888P    888        888  T88b\n");
-            sb.append(color + "                  \"Y8888P88 d88P     888 888       888 8888888888       \"Y88888P\"      Y8P     8888888888 888   T88b\n");
+            sb.append(c + "                  .d8888b.         d8888 888b     d888 8888888888       .d88888b.  888     888 8888888888 8888888b.\n");
+            sb.append(c + "                  d88P  Y88b       d88888 8888b   d8888 888             d88P\" \"Y88b 888     888 888        888   Y88b\n");
+            sb.append(c + "                  888    888      d88P888 88888b.d88888 888             888     888 888     888 888        888    888\n");
+            sb.append(c + "                  888            d88P 888 888Y88888P888 8888888         888     888 Y88b   d88P 8888888    888   d88P\n");
+            sb.append(c + "                  888  88888    d88P  888 888 Y888P 888 888             888     888  Y88b d88P  888        8888888P\"\n");
+            sb.append(c + "                  888    888   d88P   888 888  Y8P  888 888             888     888   Y88o88P   888        888 T88b\n");
+            sb.append(c + "                  Y88b  d88P  d8888888888 888   \"   888 888             Y88b. .d88P    Y888P    888        888  T88b\n");
+            sb.append(c + "                  \"Y8888P88 d88P     888 888       888 8888888888       \"Y88888P\"      Y8P     8888888888 888   T88b\n");
 
         return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
     }
 
-    public static String drawYouWon(String c, int score, Team t1, Team t2){
+    public static String drawYouWon(String color, int score, Team t1, Team t2){
 
-        String color = c;
+        String c = color;
 
         StringBuilder sb = new StringBuilder();
 
-            sb.append(color + "                              Y88b   d88P  .d88888b.  888     888      888       888  .d88888b.  888b    888\n");
-            sb.append(color + "                               Y88b d88P  d88P\" \"Y88b 888     888      888   o   888 d88P\" \"Y88b 8888b   888\n");
-            sb.append(color + "                                Y88o88P   888     888 888     888      888  d8b  888 888     888 88888b  888\n");
-            sb.append(color + "                                 Y888P    888     888 888     888      888 d888b 888 888     888 888Y88b 888\n");
-            sb.append(color + "                                  888     888     888 888     888      888d88888b888 888     888 888 Y88b888\n");
-            sb.append(color + "                                  888     888     888 888     888      88888P Y88888 888     888 888  Y88888\n");
-            sb.append(color + "                                  888     Y88b. .d88P Y88b. .d88P      8888P   Y8888 Y88b. .d88P 888   Y8888\n");
-            sb.append(color + "                                  888      \"Y88888P\"   \"Y88888P\"       888P     Y888  \"Y88888P\"  888    Y888\n");
+            sb.append(c + "                              Y88b   d88P  .d88888b.  888     888      888       888  .d88888b.  888b    888\n");
+            sb.append(c + "                               Y88b d88P  d88P\" \"Y88b 888     888      888   o   888 d88P\" \"Y88b 8888b   888\n");
+            sb.append(c + "                                Y88o88P   888     888 888     888      888  d8b  888 888     888 88888b  888\n");
+            sb.append(c + "                                 Y888P    888     888 888     888      888 d888b 888 888     888 888Y88b 888\n");
+            sb.append(c + "                                  888     888     888 888     888      888d88888b888 888     888 888 Y88b888\n");
+            sb.append(c + "                                  888     888     888 888     888      88888P Y88888 888     888 888  Y88888\n");
+            sb.append(c + "                                  888     Y88b. .d88P Y88b. .d88P      8888P   Y8888 Y88b. .d88P 888   Y8888\n");
+            sb.append(c + "                                  888      \"Y88888P\"   \"Y88888P\"       888P     Y888  \"Y88888P\"  888    Y888\n");
 
         return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
 
@@ -110,8 +110,113 @@ public class GFXGenerator {
         return null;
     }
 
-    public static String drawCountDown(int count){
+    public static String drawCountDown(Count count){
+
+        switch (count){
+            case ONE:
+                return showOne() + "\n\n\n\n\n";
+
+            case TWO:
+                return showTwo() + "\n\n\n\n\n";
+
+            case TREE:
+                return showTree() + "\n\n\n\n\n";
+
+            case READY:
+                return showReady() + "\n\n\n\n\n";
+        }
         return null;
+    }
+
+    private static String showReady(){
+
+        String s = Color.ANSI_RED;
+
+        s += "                              8888888b.  8888888888        d8888 8888888b. Y88b   d88P  .d8888b.      \n";
+        s += "                              888   Y88b 888              d88888 888  \"Y88b Y88b d88P  d88P  Y88b     \n";
+        s += "                              888    888 888             d88P888 888    888  Y88o88P        .d88P     \n";
+        s += "                              888   d88P 8888888        d88P 888 888    888   Y888P       .d88P\"      \n";
+        s += "                              8888888P\"  888           d88P  888 888    888    888        888\"        \n";
+        s += "                              888 T88b   888          d88P   888 888    888    888        888         \n";
+        s += "                              888  T88b  888         d8888888888 888  .d88P    888                    \n";
+        s += "                              888   T88b 8888888888 d88P     888 8888888P\"     888        888         \n";
+
+        s += Color.ANSI_RESET;
+
+        return CLEAR_SPACE + s;
+    }
+
+    private static String showOne(){
+
+        String s = Color.ANSI_GREEN;
+
+        s += "                                                               d888        \n";
+        s += "                                                               d8888       \n";
+        s += "                                                               888         \n";
+        s += "                                                               888         \n";
+        s += "                                                               888         \n";
+        s += "                                                               888         \n";
+        s += "                                                               888         \n";
+        s += "                                                               8888888     \n";
+
+        s += Color.ANSI_RESET;
+
+        return CLEAR_SPACE + s;
+    }
+
+    private static String showTwo(){
+
+        String s = Color.ANSI_YELLOW;
+
+        s += "                                                               .d8888b.        \n";
+        s += "                                                              d88P  Y88b       \n";
+        s += "                                                                     888       \n";
+        s += "                                                                   .d88P       \n";
+        s += "                                                               .od888P\"       \n";
+        s += "                                                              d88P\"           \n";
+        s += "                                                             888\"             \n";
+        s += "                                                             88888888888       \n";
+
+        s += Color.ANSI_RESET;
+
+        return CLEAR_SPACE + s;
+    }
+
+    private static String showTree(){
+
+        String s = Color.ANSI_RED;
+
+        s += "                                                              .d8888b.        \n";
+        s += "                                                             d88P  Y88b       \n";
+        s += "                                                                  .d88P       \n";
+        s += "                                                                 8888\"       \n";
+        s += "                                                                 \"Y8b.       \n";
+        s += "                                                             888    888       \n";
+        s += "                                                             Y88b  d88P       \n";
+        s += "                                                             \"Y8888P\"       \n";
+
+        s += Color.ANSI_RESET;
+
+        return CLEAR_SPACE + s;
+    }
+
+    private static String bannerEdge(Edge edge){
+
+        String bannerSpacing = " ".repeat(134);
+        String bannerBorder = " #" + bannerSpacing + "#\n";
+        String bannerLine = " " + "#".repeat(136) + "\n";
+
+        switch (edge){
+            case TOP:
+                return  bannerLine  + bannerBorder;
+
+            case BOTTOM:
+                return bannerBorder + bannerLine;
+
+            default:
+                return null;
+        }
+
     }
 
 }

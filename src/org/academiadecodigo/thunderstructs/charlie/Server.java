@@ -30,9 +30,9 @@ public class Server {
 
             Game g1 = new Game(2, GameType.CALC, 1, Team.RED, Team.GREEN, true);
             Game g2 = new Game(2, GameType.WORDS, 2, Team.YELLOW, Team.BLUE, true);
-            Game g4 = new Game(4, GameType.CALC, 1, Team.RED, Team.BLUE, false);
+            Game g4 = new Game(4, GameType.CALC, 2, Team.RED, Team.BLUE, false);
 
-            games.put(3,g4);
+            games.put(3, g4);
             games.put(1, g1);
             games.put(2, g2);
 

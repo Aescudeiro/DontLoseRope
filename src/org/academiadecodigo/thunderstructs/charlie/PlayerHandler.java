@@ -3,6 +3,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Generators.Count;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
@@ -200,19 +201,19 @@ public class PlayerHandler implements Runnable {
 
             switch(i){
                 case 0:
-                    printToPlayer.println(GFXGenerator.drawCountDown(4));
+                    printToPlayer.println(GFXGenerator.drawCountDown(Count.READY));
                     Thread.sleep(1000);
                     break;
                 case 1:
-                    printToPlayer.println(GFXGenerator.drawCountDown(3));
+                    printToPlayer.println(GFXGenerator.drawCountDown(Count.TREE));
                     Thread.sleep(1000);
                     break;
                 case 2:
-                    printToPlayer.println(GFXGenerator.drawCountDown(2));
+                    printToPlayer.println(GFXGenerator.drawCountDown(Count.TWO));
                     Thread.sleep(1000);
                     break;
                 case 3:
-                    printToPlayer.println(GFXGenerator.drawCountDown(1));
+                    printToPlayer.println(GFXGenerator.drawCountDown(Count.ONE));
                     Thread.sleep(1000);
                     break;
             }
