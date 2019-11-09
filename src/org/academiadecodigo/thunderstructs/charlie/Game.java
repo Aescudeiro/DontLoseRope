@@ -227,10 +227,15 @@ public class Game {
         Arrays.fill(players, null);
     }
 
+
     @Override
     public String toString() {
         return gameType.toString();
     }
+
+    /**
+     * Getters & Setters
+     */
 
     public GameType getGameType() {
         return gameType;
@@ -262,5 +267,29 @@ public class Game {
 
     public String getName() {
         return name;
+    }
+
+    public void setNumMaxPlayers(int numMaxPlayers) {
+        this.numMaxPlayers = numMaxPlayers;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public void setTeam1(Team team) {
+        teams[0] = team;
+    }
+
+    public void setTeam2(Team team) {
+        teams[1] = team;
     }
 }
