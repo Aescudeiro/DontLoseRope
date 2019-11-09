@@ -2,11 +2,15 @@ package org.academiadecodigo.thunderstructs.charlie.Generators;
 
 import org.academiadecodigo.thunderstructs.charlie.Team;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
+import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 enum Edge { TOP, BOTTOM; }
 
+enum TextAlignment { LEFT, CENTER, RIGHT; }
+
 public class GFXGenerator {
 
+    private static final int LINE_SIZE = 136;
     private static final String CLEAR_SPACE = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
             "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
@@ -21,7 +25,7 @@ public class GFXGenerator {
         StringBuilder firstRope = new StringBuilder();
         StringBuilder secondRope = new StringBuilder();
         String team1 = t1.toString() + " TEAM ";
-        String team2 = " " + t2.toString() + " TEAM";
+        String team2 = " " + t2.toString() + " TEAM";;
 
         team1 = setTeamSpacing(team1) + team1;
         team2 = team2 + setTeamSpacing(team2);
@@ -200,6 +204,23 @@ public class GFXGenerator {
         return CLEAR_SPACE + s;
     }
 
+    private static String generateInfoBox(String[] content, TextAlignment align){
+
+        String box = "";
+
+        box = bannerEdge(Edge.TOP);
+
+        for (String s : content){
+
+            box += generateBannerContentLine(s, align);
+
+        }
+
+        box += bannerEdge(Edge.BOTTOM);
+
+        return box;
+    }
+
     private static String bannerEdge(Edge edge){
 
         String bannerSpacing = " ".repeat(134);
@@ -217,6 +238,31 @@ public class GFXGenerator {
                 return null;
         }
 
+    }
+
+    private static String generateBannerContentLine(String content, TextAlignment align){
+
+        int spaces = (LINE_SIZE - content.length()) / 2;
+        String spacing = " ".repeat(spaces - 1);
+        String smallSpace = " ".repeat(3);
+        String bigSpace = " ".repeat(spaces + spaces - 5);
+
+        if((content.length() % 2) != 0){
+            content = content + " ";
+        }
+
+        switch (align){
+            case LEFT:
+                return " #" + smallSpace + content + bigSpace + "#\n";
+
+            case CENTER:
+                return " #" + spacing + content + spacing + "#\n";
+
+            case RIGHT:
+                return " #" + bigSpace + content + smallSpace + "#\n";
+        }
+
+        return "Ops... Something went wrong. Unable to create this line";
     }
 
 }
