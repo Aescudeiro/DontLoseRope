@@ -126,6 +126,7 @@ public class PlayerHandler implements Runnable {
         return Server.getGames().get(gameRoom);
     }
 
+
     public void joinGame() throws InterruptedException{
 
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\n");
@@ -154,6 +155,18 @@ public class PlayerHandler implements Runnable {
 
     // TODO: create new game, allowing other gamers to join this game, maybe set a password for it. Needs a sub-menu asking for game name, game type, team colors, game difficulty, amount of players.
     public void createNewGame(){
+
+        boolean createGame = false;
+        boolean goBack = false;
+/*        while (!createGame || !goBack) {
+
+            gameToCreate(MenuGenerator.createGame());
+
+        }*/
+
+    }
+
+    public void gameToCreate() {
 
     }
 
