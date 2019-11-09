@@ -204,12 +204,7 @@ public class MenuGenerator {
 
     public static Team chooseTeam(Prompt prompt, Game game) {
 
-        String[] teams = new String[game.getTeams().length + 1];
-
-        for (int i = 0; i < teams.length - 1; i++) {
-            teams[i] = game.getTeams()[i].toString();
-            System.out.println(teams[i]);
-        }
+        String[] teams = game.getAvailableTeams();
 
         teams[teams.length - 1] = "Go back";
 
@@ -219,14 +214,12 @@ public class MenuGenerator {
         int choice = prompt.getUserInput(menuInputScanner);
 
         Team[] teamTypes = game.getTeams();
-
         if (choice < teamTypes.length + 1) {
-            System.out.println(teamTypes[choice - 1]);
+
             return teamTypes[choice - 1];
         }
 
         return null;
-
     }
 
 }
