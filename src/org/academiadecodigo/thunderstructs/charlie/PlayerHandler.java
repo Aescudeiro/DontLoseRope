@@ -8,6 +8,7 @@ import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
+import org.w3c.dom.ls.LSOutput;
 
 import java.awt.*;
 import java.io.IOException;
@@ -157,7 +158,7 @@ public class PlayerHandler implements Runnable {
     public void createNewGame(){
 
         boolean createGame = false;
-        Game creatingGame = new Game(0, null, 0, null,null,false);
+        //Game creatingGame = new Game(null,0, null, 0, null,null,false);
 
         String gameName = "";
         int playerAmount = 0;
@@ -168,7 +169,7 @@ public class PlayerHandler implements Runnable {
 
         while (!createGame) {
 
-            int menuChoice = MenuGenerator.createGameMenu();
+            int menuChoice = MenuGenerator.createGameMenu(prompt);
 
             switch (menuChoice) {
 
@@ -180,37 +181,64 @@ public class PlayerHandler implements Runnable {
                     return;
 
                 case 1:
-                    setGameName();
+                    gameName = setGameName();
                     break;
 
                 case 2:
-                    setPlayerAmount();
+                    playerAmount = setPlayerAmount();
                     break;
 
                 case 3:
-                    setTeamColors();
+                    selectTeam();
                     break;
 
                 case 4:
-                    setGameType();
+                    gameType = setGameType();
                     break;
 
                 case 5:
-                    setGameDifficulty();
+                    gameDifficulty = setGameDifficulty();
                     break;
             }
-
-        creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
-
         }
 
-    }
-
-    public void gameToCreate() {
+        Game creatingGame = new Game(gameName, playerAmount, gameType, gameDifficulty, team1Color, team2Color, false);
 
     }
 
-    public void sendChallenge(PlayerHandler player) {
+    private String setGameName() {
+
+        try {
+            return MenuGenerator.setGameName(playerSocket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private int setPlayerAmount() {
+
+        try {
+            return MenuGenerator.setMaxNumbers(playerSocket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private void selectTeam() {
+
+    }
+
+    private GameType setGameType() {
+        return MenuGenerator.setGameType(prompt);
+    }
+
+    private int setGameDifficulty() {
+        return MenuGenerator.setGameDifficulty(prompt);
+    }
+
+    private void sendChallenge(PlayerHandler player) {
 
         switch (game.getGameType()) {
             case CALC:
