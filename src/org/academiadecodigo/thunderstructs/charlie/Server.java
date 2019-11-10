@@ -65,7 +65,7 @@ public class Server {
             Server server = new Server(new ServerSocket(Integer.parseInt(port)));
 
             Game g1 = new Game("Calculation game (Difficulty 1)",2, GameType.CALC, 1, Team.RED, Team.GREEN, false);
-            Game g2 = new Game("Word game (Difficulty 2)",4, GameType.WORDS, 2, Team.YELLOW, Team.BLUE, false);
+            Game g2 = new Game("Word game (Difficulty 2)",2, GameType.WORDS, 2, Team.YELLOW, Team.BLUE, false);
             Game g3 = new Game("Brainfuck?",2, GameType.MIXED, 4, Team.YELLOW, Team.BLUE, false);
 
             games.put(g1.getName(), g1);

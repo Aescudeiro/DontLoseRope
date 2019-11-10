@@ -24,6 +24,7 @@ public class PlayerHandler implements Runnable {
     private Game game;
     private String gameRoom;
     private int gameID;
+    private int correctAnswers;
     private boolean quit;
     private boolean gameOver;
     private String currentGameInfo = "";
@@ -32,6 +33,7 @@ public class PlayerHandler implements Runnable {
 
         this.playerSocket = playerSocket;
         gameOver = false;
+        correctAnswers = 0;
 
         try {
             this.prompt = new Prompt(playerSocket.getInputStream(), new PrintStream(playerSocket.getOutputStream()));
@@ -377,9 +379,15 @@ public class PlayerHandler implements Runnable {
         //playerRun(menuOption);
     }
 
+
     public void reset() {
+        correctAnswers = 0;
         team = null;
         game = null;
+    }
+
+    public void increaseCorrectAnswers() {
+        correctAnswers++;
     }
 
     public void exit() throws IOException {
@@ -435,5 +443,9 @@ public class PlayerHandler implements Runnable {
 
     public Prompt getPrompt() {
         return prompt;
+    }
+
+    public int getCorrectAnswers() {
+        return correctAnswers;
     }
 }

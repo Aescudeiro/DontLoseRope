@@ -181,6 +181,7 @@ public class Game {
     public synchronized void updateScore(PlayerHandler playerHandler) {
 
         int points = teams.length * Server.TEAM_SCORE / numMaxPlayers;
+        playerHandler.increaseCorrectAnswers();
 
         if (playerHandler.getTeam() == teams[0]) {
             score -= points;
