@@ -15,7 +15,7 @@ public class Server {
     public static final int TEAM_SCORE = 10;
     private ServerSocket serverSocket;
     private static Map<String, PlayerHandler> players = new HashMap<>();
-    private static Map<Integer, Game> games = new HashMap<>();
+    private static volatile Map<Integer, Game> games = new HashMap<>();
 
     public Server(ServerSocket serverSocket) {
 

@@ -100,6 +100,7 @@ public class MenuGenerator {
                 "Set team" + teams,
                 "Set game type" + (game.getGameType() == null ? " " : color + " (" + game.getGameType().toString().toLowerCase() + ")" + resetColor),
                 "Set difficulty" + (game.getDifficulty() == 0 ? " " : color + " (" + game.getDifficulty() + ")" + resetColor),
+                "Help",
                 "Create Game",
                 "Cancel"
         };
@@ -110,6 +111,10 @@ public class MenuGenerator {
         }
 
         int choice = buildMenu(prompt, msg, menu);
+
+        if (choice == menu.length -1 ) {
+            return -1;
+        }
 
         if (choice < menu.length - 1) {
             return choice;

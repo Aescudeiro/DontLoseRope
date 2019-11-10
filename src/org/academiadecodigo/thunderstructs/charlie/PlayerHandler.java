@@ -190,6 +190,7 @@ public class PlayerHandler implements Runnable {
             switch (menuChoice) {
 
                 case -1:
+                    System.err.println("chose: " + menuChoice);
                     if(!isAllSet(creatingGame)){
                         break;
                     }
@@ -228,6 +229,9 @@ public class PlayerHandler implements Runnable {
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
                             "Game difficulty set to: " + creatingGame.getDifficulty() + creatingGame.toString());
                     break;
+                case 6:
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.generateInfoBox(Messages.createGameInstructions, TextAlign.LEFT));
+                    break;
             }
 
             if (!createGame) {
@@ -242,6 +246,7 @@ public class PlayerHandler implements Runnable {
     }
 
     public boolean isAllSet(Game creatingGame) {
+        System.err.println("entered is all set" + creatingGame.toString());
         if(creatingGame.getName() == null) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set game name!");
             return false;
