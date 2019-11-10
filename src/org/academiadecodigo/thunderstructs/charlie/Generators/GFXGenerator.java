@@ -6,8 +6,6 @@ import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 enum Edge { TOP, BOTTOM; }
 
-enum TextAlignment { LEFT, CENTER, RIGHT; }
-
 public class GFXGenerator {
 
     private static final int LINE_SIZE = 136;
@@ -110,10 +108,6 @@ public class GFXGenerator {
 
     }
 
-    public static String showGameInstructions(){
-        return null;
-    }
-
     public static String drawCountDown(Count count){
 
         switch (count){
@@ -204,7 +198,7 @@ public class GFXGenerator {
         return CLEAR_SPACE + s;
     }
 
-    private static String generateInfoBox(String[] content, TextAlignment align){
+    public static String generateInfoBox(String[] content, TextAlign align){
 
         String box = "";
 
@@ -240,7 +234,7 @@ public class GFXGenerator {
 
     }
 
-    private static String generateBannerContentLine(String content, TextAlignment align){
+    private static String generateBannerContentLine(String content, TextAlign align){
 
         int spaces = (LINE_SIZE - content.length()) / 2;
         String spacing = " ".repeat(spaces - 1);
