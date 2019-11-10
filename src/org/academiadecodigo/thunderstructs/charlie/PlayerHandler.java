@@ -223,7 +223,7 @@ public class PlayerHandler implements Runnable {
                     break;
             }
 
-            if (!isAllSet(creatingGame)) {
+            if (!createGame) {
                 menuChoice = MenuGenerator.createGameMenuAgain(prompt);
             }
 
