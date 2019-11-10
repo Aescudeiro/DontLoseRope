@@ -20,9 +20,9 @@ import java.util.*;
 
 public class MenuGenerator {
 
-    public static String askName(Prompt prompt){
+    public static String askName(Prompt prompt) {
 
-        StringInputScanner stringInputScanner  = new StringInputScanner();
+        StringInputScanner stringInputScanner = new StringInputScanner();
         stringInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
 
         return prompt.getUserInput(stringInputScanner);
@@ -34,7 +34,7 @@ public class MenuGenerator {
         String[] menu = {"Join game", "Create game", "How to play", "Quit"};
 
         String msg = Messages.MAIN_MENU;
-        if(hasGameTitle){
+        if (hasGameTitle) {
             msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.MAIN_MENU;
         }
 
@@ -57,7 +57,15 @@ public class MenuGenerator {
 
         int counter = 0;
         for (Game game : Server.getGames().values()) {
-            games[counter] = game.getName();
+            if (game.getActivePlayers() == 0) {
+                games[counter] = game.getName() + (Color.ANSI_YELLOW + " (" + "Players: " +
+                        game.getActivePlayers() + " of " + game.getNumMaxPlayers() + ")" + Color.ANSI_RESET);
+            }else if(game.getActivePlayers() == game.getNumMaxPlayers()) {
+                games[counter] = game.getName() + (Color.ANSI_RED + " (FULL)" + Color.ANSI_RESET);
+            } else {
+                games[counter] = game.getName() + (Color.ANSI_YELLOW + " (" + "Players: " +
+                        game.getActivePlayers() + " of " + game.getNumMaxPlayers() + ")" + Color.ANSI_RESET);
+            }
             counter++;
         }
 
@@ -78,25 +86,25 @@ public class MenuGenerator {
         String resetColor = Color.ANSI_RESET;
 
         String teams = "";
-        if(game.getTeams()[0] == null && game.getTeams()[1] == null){
+        if (game.getTeams()[0] == null && game.getTeams()[1] == null) {
             teams = " ";
         }
 
-        if (game.getTeams()[1] != null && game.getTeams()[0] == null){
+        if (game.getTeams()[1] != null && game.getTeams()[0] == null) {
             teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + color + ", add team 2" + resetColor + ")";
         }
 
-        if (game.getTeams()[0] != null && game.getTeams()[1] == null){
+        if (game.getTeams()[0] != null && game.getTeams()[1] == null) {
             teams = " (" + color + "add team 1, " + resetColor + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + ")";
         }
 
-        if (game.getTeams()[0] != null && game.getTeams()[1] != null){
+        if (game.getTeams()[0] != null && game.getTeams()[1] != null) {
             teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + ", " + resetColor + game.getTeams()[1].getColor() + game.getTeams()[1].toString().toLowerCase() + resetColor + ")";
         }
 
         String[] menu = {
                 "Set game name" + (game.getName() == null ? " " : color + " (" + game.getName() + ")" + resetColor),
-                "Set max players" + (game.getNumMaxPlayers() == 0 ? " " :  color + " (" + game.getNumMaxPlayers() + ")" + resetColor),
+                "Set max players" + (game.getNumMaxPlayers() == 0 ? " " : color + " (" + game.getNumMaxPlayers() + ")" + resetColor),
                 "Set team" + teams,
                 "Set game type" + (game.getGameType() == null ? " " : color + " (" + game.getGameType().toString().toLowerCase() + ")" + resetColor),
                 "Set difficulty" + (game.getDifficulty() == 0 ? " " : color + " (" + game.getDifficulty() + ")" + resetColor),
@@ -106,13 +114,13 @@ public class MenuGenerator {
         };
 
         String msg = Messages.CREATE_MENU;
-        if(hasGameTitle){
+        if (hasGameTitle) {
             msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CREATE_MENU;
         }
 
         int choice = buildMenu(prompt, msg, menu);
 
-        if (choice == menu.length -1 ) {
+        if (choice == menu.length - 1) {
             return -1;
         }
 
@@ -125,7 +133,7 @@ public class MenuGenerator {
 
     public static String setGameName(Prompt prompt) {
 
-        StringInputScanner stringInputScanner  = new StringInputScanner();
+        StringInputScanner stringInputScanner = new StringInputScanner();
         stringInputScanner.setMessage(Messages.GAME_NAME);
 
         return prompt.getUserInput(stringInputScanner);
@@ -147,7 +155,7 @@ public class MenuGenerator {
 
     }
 
-    public static int selectTeam(Prompt prompt, Game game){
+    public static int selectTeam(Prompt prompt, Game game) {
 
         String color = Color.ANSI_YELLOW;
         String resetColor = Color.ANSI_RESET;
@@ -162,7 +170,7 @@ public class MenuGenerator {
 
         int choice = buildMenu(prompt, msg, teams);
 
-        if (choice < teams.length){
+        if (choice < teams.length) {
             return choice;
         }
 
@@ -203,7 +211,7 @@ public class MenuGenerator {
         menu[menu.length - 1] = "Go back";
 
         int counter = 0;
-        for(GameType gt : GameType.values()){
+        for (GameType gt : GameType.values()) {
             menu[counter] = gt.toString();
             counter++;
         }
@@ -213,21 +221,21 @@ public class MenuGenerator {
         int choice = buildMenu(prompt, msg, menu);
 
         if (choice < GameType.values().length + 1) {
-            System.out.println(GameType.values()[choice -1]);
-            return GameType.values()[choice -1];
+            System.out.println(GameType.values()[choice - 1]);
+            return GameType.values()[choice - 1];
         }
         return null;
     }
 
-    public static int setGameDifficulty(Prompt prompt){
+    public static int setGameDifficulty(Prompt prompt) {
 
-        String[] menu = {"Easy" , "Normal", "Hard", "SUPER", "Go back"};
+        String[] menu = {"Easy", "Normal", "Hard", "SUPER", "Go back"};
 
         String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_DIFFICULTY;
 
         int choice = buildMenu(prompt, msg, menu);
 
-        if (choice < menu.length){
+        if (choice < menu.length) {
             return choice;
         }
 
@@ -235,7 +243,7 @@ public class MenuGenerator {
     }
 
     public static synchronized Team chooseTeam(Prompt prompt, Game game) {
-        if(game.getActivePlayers() == game.getNumMaxPlayers()){
+        if (game.getActivePlayers() == game.getNumMaxPlayers()) {
             return null;
         }
 
@@ -247,9 +255,9 @@ public class MenuGenerator {
 
         Team[] teamTypes = game.getTeams();
 
-        if(teams.length == 2) {
+        if (teams.length == 2) {
             for (Team t : teamTypes) {
-                if (t.toString().equals(teams[0])){
+                if (t.toString().equals(teams[0])) {
                     return game.getTeams()[0];
                 }
                 return game.getTeams()[1];
@@ -264,7 +272,7 @@ public class MenuGenerator {
         return null;
     }
 
-    private static int buildMenu(Prompt prompt, String menuMessage, String [] menuOptions){
+    private static int buildMenu(Prompt prompt, String menuMessage, String[] menuOptions) {
         MenuInputScanner menu = new MenuInputScanner(menuOptions);
         menu.setMessage(menuMessage);
         return prompt.getUserInput(menu);
