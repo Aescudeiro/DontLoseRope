@@ -22,7 +22,7 @@ public class PlayerHandler implements Runnable {
     private Team team;
     private Prompt prompt;
     private Game game;
-    private int gameRoom;
+    private String gameRoom;
     private int gameID;
     private boolean quit;
     private boolean gameOver;
@@ -140,7 +140,7 @@ public class PlayerHandler implements Runnable {
     public Game gameToEnter() {
 
         gameRoom = MenuGenerator.joinGame(prompt);
-        if (gameRoom == 0) {
+        if (gameRoom == null) {
             return null;
         }
 
@@ -248,7 +248,7 @@ public class PlayerHandler implements Runnable {
         }
 
         creatingGame.setPlayers(creatingGame.getNumMaxPlayers());
-        Server.getGames().put(Server.getGames().size() + 1, creatingGame);
+        Server.getGames().put(creatingGame.getName(), creatingGame);
 
     }
 
@@ -415,7 +415,7 @@ public class PlayerHandler implements Runnable {
         return team;
     }
 
-    public int getGameRoom() {
+    public String getGameRoom() {
         return gameRoom;
     }
 

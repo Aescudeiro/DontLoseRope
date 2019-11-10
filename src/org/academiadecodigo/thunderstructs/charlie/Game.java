@@ -125,9 +125,9 @@ public class Game {
                 if (game.equals(this)) {
                     Server.getGames().remove(playerHandler.getGameRoom());
                     //return; //(if not commented, does not remove the !fixed game.
+                    System.out.println("removed game");
                 }
             }
-            System.out.println("removed game");
         }
 
         resetGameRoom();

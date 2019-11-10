@@ -48,7 +48,7 @@ public class MenuGenerator {
 
     }
 
-    public static int joinGame(Prompt prompt) {
+    public static String joinGame(Prompt prompt) {
 
         // TODO: 09/11/2019 add dynamic player number to game (gamename [players/maxplayers])
 
@@ -73,11 +73,13 @@ public class MenuGenerator {
 
         int choice = buildMenu(prompt, msg, games);
 
-        if (choice < games.length) {
-            return choice;
+        for (int i = 0; i < Server.getGames().keySet().toArray().length; i++) {
+            if (i == choice - 1) {
+                return Server.getGames().keySet().toArray()[choice - 1].toString();
+            }
         }
 
-        return 0;
+        return null;
     }
 
     public static int createGameMenu(Prompt prompt, boolean hasGameTitle, Game game) {
