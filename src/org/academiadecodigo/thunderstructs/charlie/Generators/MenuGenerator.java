@@ -1,8 +1,10 @@
 package org.academiadecodigo.thunderstructs.charlie.Generators;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Game;
 import org.academiadecodigo.thunderstructs.charlie.GameType;
 import org.academiadecodigo.thunderstructs.charlie.Server;
@@ -18,14 +20,12 @@ import java.util.*;
 
 public class MenuGenerator {
 
-    public static String askName(Socket playerSocket) throws IOException {
+    public static String askName(Prompt prompt){
 
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
+        StringInputScanner stringInputScanner  = new StringInputScanner();
+        stringInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
 
-        printWriter.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
-
-        return input.nextLine();
+        return prompt.getUserInput(stringInputScanner);
 
     }
 
@@ -118,28 +118,24 @@ public class MenuGenerator {
         return 0;
     }
 
-    public static String setGameName(Socket playerSocket) throws IOException {
+    public static String setGameName(Prompt prompt) {
 
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
+        StringInputScanner stringInputScanner  = new StringInputScanner();
+        stringInputScanner.setMessage(Messages.GAME_NAME);
 
-        printWriter.println("Set game name: ");
-
-        return input.nextLine();
+        return prompt.getUserInput(stringInputScanner);
 
     }
 
-    public static int setMaxNumbers(Socket playerSocket) throws IOException {
+    public static int setMaxNumbers(Prompt prompt) {
 
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
+        IntegerInputScanner integerInputScanner = new IntegerInputScanner();
+        integerInputScanner.setMessage(Messages.SET_MAX_PLAYERS);
 
-        printWriter.println("Set max player number: ");
-
-        int maxNumber = Integer.parseInt(input.nextLine());
+        int maxNumber = prompt.getUserInput(integerInputScanner);
 
         if (maxNumber < 2) {
-            setMaxNumbers(playerSocket);
+            setMaxNumbers(prompt);
         }
 
         return maxNumber;
@@ -215,6 +211,7 @@ public class MenuGenerator {
             System.out.println(GameType.values()[choice -1]);
             return GameType.values()[choice -1];
         }
+
         return null;
     }
 
