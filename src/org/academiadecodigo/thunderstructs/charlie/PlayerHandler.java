@@ -243,29 +243,29 @@ public class PlayerHandler implements Runnable {
 
     public boolean isAllSet(Game creatingGame) {
         if(creatingGame.getName() == null) {
-            printToPlayer.println("Set game name!");
+            printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set game name!");
             return false;
         }
 
         if(creatingGame.getNumMaxPlayers() <= 1) {
-            printToPlayer.println("Insert 2 or more players!");
+            printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Insert 2 or more players!");
             return false;
         }
 
         for(int i = 0; i < creatingGame.getTeams().length; i++) {
             if(creatingGame.getTeams()[i] == null) {
-                printToPlayer.println("Please choose Team Colors!");
+                printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Please choose Team Colors!");
                 return false;
             }
         }
 
         if(creatingGame.getGameType() == null) {
-            printToPlayer.println("Set Game Type!");
+            printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set Game Type!");
             return false;
         }
 
         if(creatingGame.getDifficulty() == 0) {
-            printToPlayer.println("Set Game Difficulty!");
+            printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set Game Difficulty!");
             return false;
         }
 
