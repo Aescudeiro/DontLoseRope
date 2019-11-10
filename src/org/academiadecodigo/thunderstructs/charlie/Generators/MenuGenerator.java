@@ -219,7 +219,10 @@ public class MenuGenerator {
         return 0;
     }
 
-    public static Team chooseTeam(Prompt prompt, Game game) {
+    public static synchronized Team chooseTeam(Prompt prompt, Game game) {
+        if(game.getActivePlayers() == game.getNumMaxPlayers()){
+            return null;
+        }
 
         String[] teams = game.getAvailableTeams();
 

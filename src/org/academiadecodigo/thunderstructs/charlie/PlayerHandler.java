@@ -120,6 +120,7 @@ public class PlayerHandler implements Runnable {
 
         while (team == null) {
 
+            System.err.println(name + " entered game room");
             if ((game = gameToEnter()) == null) {
                 return;
             }
@@ -138,6 +139,7 @@ public class PlayerHandler implements Runnable {
 
     public Game gameToEnter() {
 
+        System.err.println("entered game should get menu");
         gameRoom = MenuGenerator.joinGame(prompt);
         if (gameRoom == 0) {
             return null;
