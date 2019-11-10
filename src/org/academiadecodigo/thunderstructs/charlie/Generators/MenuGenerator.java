@@ -184,7 +184,7 @@ public class MenuGenerator {
         for (int i = 1; i < choices.length; i++) {
             choices[i - 1] = teams.toArray()[i - 1].toString();
         }
-        choices[choices.length - 1] = "Go back";
+        choices[choices.length - 1] = "Reset color";
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(choices);
         menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_TEAM_COLOR);
@@ -219,20 +219,19 @@ public class MenuGenerator {
             System.out.println(GameType.values()[choice -1]);
             return GameType.values()[choice -1];
         }
-        System.out.println("ola");
         return null;
     }
 
     public static int setGameDifficulty(Prompt prompt){
 
-        String[] menu = {"1" , "2", "3", "4", "Go back"};
+        String[] menu = {"Easy" , "Normal", "Hard", "SUPER", "Go back"};
 
         MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
         menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_DIFFICULTY);
 
         int choice = prompt.getUserInput(menuInputScanner);
 
-        if (choice < menu.length - 1){
+        if (choice < menu.length){
             return choice;
         }
 
