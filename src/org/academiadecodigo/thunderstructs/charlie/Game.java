@@ -18,7 +18,7 @@ public class Game {
     private volatile int gameCounter;
     private int numMaxPlayers;
     private int difficulty;
-    private boolean fixedGame;
+    private boolean temporaryGame;
 
     private String name;
 
@@ -27,9 +27,9 @@ public class Game {
     private GameType gameType;
 
 
-    public Game(String name, int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean fixed) {
+    public Game(String name, int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean temporary) {
 
-        fixedGame = fixed;
+        temporaryGame = temporary;
         score = MAX_SCORE / 2;
         activePlayers = 0;
         gameCounter = 0;
@@ -120,7 +120,7 @@ public class Game {
 
         winner();
 
-        if (!fixedGame) {
+        if (temporaryGame) {
             for (Game game : Server.getGames().values()) {
                 if (game.equals(this)) {
                     Server.getGames().remove(playerHandler.getGameRoom());

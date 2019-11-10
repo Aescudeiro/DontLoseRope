@@ -176,7 +176,7 @@ public class PlayerHandler implements Runnable {
     public void createNewGame(){
 
         boolean createGame = false;
-        Game creatingGame = new Game(null,0, null, 0, null,null,false);
+        Game creatingGame = new Game(null,0, null, 0, null,null,true);
 
         currentGameInfo = creatingGame.toString();
         System.out.println(currentGameInfo);
