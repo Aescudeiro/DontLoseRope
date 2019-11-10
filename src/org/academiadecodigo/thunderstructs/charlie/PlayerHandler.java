@@ -50,12 +50,15 @@ public class PlayerHandler implements Runnable {
             this.name = MenuGenerator.askName(prompt);
             joinPlayerMap();
 
-            int menuOption;
+            int menuOption = -1;
 
             while (!quit) {
                 if(!gameOver){
-                    menuOption = MenuGenerator.mainMenu(prompt,true);
-                    System.out.println("menu sent, option: " + menuOption);
+                    if (menuOption == 3) {
+                        menuOption = MenuGenerator.mainMenu(prompt, false);
+                    } else {
+                        menuOption = MenuGenerator.mainMenu(prompt,true);
+                    }
 
                     playerRun(menuOption);
                     continue;
@@ -179,7 +182,6 @@ public class PlayerHandler implements Runnable {
         Game creatingGame = new Game(null,0, null, 0, null,null,true);
 
         currentGameInfo = creatingGame.toString();
-        System.out.println(currentGameInfo);
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         int menuChoice;

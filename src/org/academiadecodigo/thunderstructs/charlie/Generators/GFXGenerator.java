@@ -200,12 +200,11 @@ public class GFXGenerator {
 
     public static String generateInfoBox(String[] content, TextAlign align){
 
-        String box = "";
+        String box = clearScreen();
 
-        box = bannerEdge(Edge.TOP);
+        box += bannerEdge(Edge.TOP);
 
         for (String s : content){
-
             box += generateBannerContentLine(s, align);
 
         }

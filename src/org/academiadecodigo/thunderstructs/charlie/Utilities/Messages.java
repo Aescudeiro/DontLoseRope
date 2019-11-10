@@ -19,15 +19,13 @@ public class Messages {
     public static final String GAME_NAME = Color.ANSI_GREEN + "Please insert the game name: " + Color.ANSI_RESET;
     public static final String SET_MAX_PLAYERS = Color.ANSI_GREEN + "Set max player number: " + Color.ANSI_RESET;
 
-    public static final String CORRECT_ANSWER = "Your answer was correct!";
-    public static final String WRONG_ANSWER = "Your answer was wrong...";
-
     public static final String[] gameInstructions = {
             "GAME INSTRUCTIONS",
             "_________________",
             "",
-            "Don't lose rope, meaning you can't lose rope. You lose rope whenever a player from the opposing team scores at a challenge.",
-            "There are 2 types of challenges, the words challenge and the equation challenge.",
+            "Don't lose rope, meaning you can't lose rope.",
+            "You lose rope whenever a player from the opposing team answers a challenge correctly.",
+            "There are 2 types of challenges:",
             "",
             "   Words challenge: You'll have to type the provided word. There are 4 difficulty levels:",
             "",
@@ -43,8 +41,8 @@ public class Messages {
             "       3. Addictions, subtractions and multiplication.",
             "       4. Addictions, subtractions, multiplications and division",
             "",
-            "Don't Lose Rope has a few pre-created game rooms to which you can join or you could create your own games.",
-            "Game starts when all players have joined the game.",
+            "Don't Lose Rope has a few pre-created game rooms that you can join, or you can create your own game room!",
+            "Rope game starts when the room is full. Be ready for the countdown!",
             "__________________",
             "",
             "This game was created by:",
