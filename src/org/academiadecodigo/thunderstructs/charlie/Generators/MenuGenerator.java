@@ -44,6 +44,22 @@ public class MenuGenerator {
         return 0;
 
     }
+    public static int menuAfterMatch(Prompt prompt) {
+
+        String[] menu = {"Join game", "Create game", "How to play", "Quit"};
+
+        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
+        menuInputScanner.setMessage(Messages.MAIN_MENU);
+
+        int choice = prompt.getUserInput(menuInputScanner);
+
+        if (choice <= menu.length - 1) {
+            return choice;
+        }
+
+        return 0;
+
+    }
 
     public static int joinGame(Prompt prompt) {
 
@@ -215,6 +231,18 @@ public class MenuGenerator {
         int choice = prompt.getUserInput(menuInputScanner);
 
         Team[] teamTypes = game.getTeams();
+        //Team[] teamTypes = new Team[game.getAvailableTeams().length];
+        //for(int i = 0; i < teamTypes.length; i++) {}
+
+        if(teams.length == 2) {
+            for (Team t : teamTypes) {
+                if (t.toString().equals(teams[0])){
+                    return game.getTeams()[0];
+                }
+                return game.getTeams()[1];
+            }
+        }
+
         if (choice < teamTypes.length + 1) {
 
             return teamTypes[choice - 1];

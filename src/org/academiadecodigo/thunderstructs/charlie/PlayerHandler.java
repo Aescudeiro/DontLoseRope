@@ -26,11 +26,13 @@ public class PlayerHandler implements Runnable {
     private Game game;
     private int gameRoom;
     private boolean quit;
+    private boolean gameOver;
     private String currentGameInfo = "";
 
     public PlayerHandler(Socket playerSocket) {
 
         this.playerSocket = playerSocket;
+        gameOver = false;
 
         try {
             this.prompt = new Prompt(playerSocket.getInputStream(), new PrintStream(playerSocket.getOutputStream()));
@@ -49,8 +51,19 @@ public class PlayerHandler implements Runnable {
             this.name = MenuGenerator.askName(playerSocket);
             joinPlayerMap();
 
+            int menuOption;
+
             while (!quit) {
-                playerRun();
+                if(!gameOver){
+                     menuOption = MenuGenerator.mainMenu(prompt);
+                    System.out.println("menu sent, option: " + menuOption);
+
+                    playerRun(menuOption);
+                    continue;
+                }
+                menuOption =  MenuGenerator.menuAfterMatch(prompt);
+                playerRun(menuOption);
+                gameOver = false;
             }
             exit();
 
@@ -71,13 +84,9 @@ public class PlayerHandler implements Runnable {
     /**
      * Main menu screen is shown to the player allowing them to choose from the menu options.
      */
-    public void playerRun() {
-
-        int menuOption = MenuGenerator.mainMenu(prompt);
-        System.out.println("menu sent, option: " + menuOption);
+    public void playerRun(int menuOption) {
 
         try {
-
             switch (menuOption) {
                 case 0:
                     quit = true;
@@ -100,6 +109,8 @@ public class PlayerHandler implements Runnable {
         } catch (InterruptedException ie){
             System.err.println("Something went wrong with Count Down");
         }
+
+
     }
 
     /**
@@ -121,6 +132,7 @@ public class PlayerHandler implements Runnable {
 
             System.out.println(gameRoom + " had space in game " + game.toString());
             team = chooseTeam();
+            System.out.println(team.getTeam());
         }
     }
 
@@ -282,6 +294,7 @@ public class PlayerHandler implements Runnable {
         // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
         printToPlayer.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
         game.gameOver(this);
+        gameOver = true;
         reset();
     }
 
