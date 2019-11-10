@@ -54,7 +54,7 @@ public class PlayerHandler implements Runnable {
 
             while (!quit) {
                 if(!gameOver){
-                     menuOption = MenuGenerator.mainMenu(prompt,true);
+                    menuOption = MenuGenerator.mainMenu(prompt,true);
                     System.out.println("menu sent, option: " + menuOption);
 
                     playerRun(menuOption);
@@ -219,7 +219,12 @@ public class PlayerHandler implements Runnable {
                     break;
 
                 case 4:
-                    creatingGame.setGameType(setGameType());
+                    GameType gameType;
+                    if ((gameType = setGameType()) == null) {
+                        printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle());
+                        break;
+                    }
+                    creatingGame.setGameType(gameType);
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
                             "Game type set to: " + creatingGame.getGameType().toString() + creatingGame.toString());
                     break;

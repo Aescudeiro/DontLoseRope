@@ -216,7 +216,6 @@ public class MenuGenerator {
             System.out.println(GameType.values()[choice -1]);
             return GameType.values()[choice -1];
         }
-
         return null;
     }
 
