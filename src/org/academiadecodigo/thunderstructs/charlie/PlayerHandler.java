@@ -25,6 +25,7 @@ public class PlayerHandler implements Runnable {
     private Prompt prompt;
     private Game game;
     private int gameRoom;
+    private int gameID;
     private boolean quit;
     private boolean gameOver;
     private String currentGameInfo = "";
@@ -120,7 +121,6 @@ public class PlayerHandler implements Runnable {
 
         while (team == null) {
 
-            System.err.println(name + " entered game room");
             if ((game = gameToEnter()) == null) {
                 return;
             }
@@ -133,13 +133,11 @@ public class PlayerHandler implements Runnable {
 
             System.out.println(gameRoom + " had space in game " + game.toString());
             team = chooseTeam();
-            System.out.println(team.getTeam());
         }
     }
 
     public Game gameToEnter() {
 
-        System.err.println("entered game should get menu");
         gameRoom = MenuGenerator.joinGame(prompt);
         if (gameRoom == 0) {
             return null;
@@ -154,6 +152,8 @@ public class PlayerHandler implements Runnable {
         printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\nWaiting for players...\n");
         game.addPlayer(this);
 
+        gameID = game.getGameCounter();
+
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
         }
 
@@ -161,7 +161,7 @@ public class PlayerHandler implements Runnable {
 
         while (game.getScore() > 0 && game.getScore() < 100) {
             // TODO: 08/11/2019 HARD: make it leave input when game over
-            if (game.getPlayers()[0] == null) {
+            if (gameID != game.getGameCounter()) {
                 reset();
                 return;
             }
@@ -179,20 +179,22 @@ public class PlayerHandler implements Runnable {
 
         boolean createGame = false;
         Game creatingGame = new Game(null,0, null, 0, null,null,false);
+
         currentGameInfo = creatingGame.toString();
         System.out.println(currentGameInfo);
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
+        int menuChoice;
+        menuChoice= MenuGenerator.createGameMenu(prompt);
+
         while (!createGame) {
-
-            System.out.println("entered creategame loop");
-            int menuChoice = MenuGenerator.createGameMenu(prompt);
-
-            printToPlayer.println(currentGameInfo);
 
             switch (menuChoice) {
 
                 case -1:
+                    if(!isAllSet(creatingGame)){
+                        break;
+                    }
                     createGame = true;
                     break;
 
@@ -223,11 +225,47 @@ public class PlayerHandler implements Runnable {
                     printToPlayer.println("Game difficulty set to: " + creatingGame.getDifficulty());
                     break;
             }
+
+            if (!isAllSet(creatingGame)) {
+                menuChoice = MenuGenerator.createGameMenuAgain(prompt);
+            }
+
         }
 
         creatingGame.setPlayers(creatingGame.getNumMaxPlayers());
         Server.getGames().put(Server.getGames().size() + 1, creatingGame);
 
+    }
+
+    public boolean isAllSet(Game creatingGame) {
+        if(creatingGame.getName() == null) {
+            printToPlayer.println("Set game name!");
+            return false;
+        }
+
+        if(creatingGame.getNumMaxPlayers() <= 1) {
+            printToPlayer.println("Insert 2 or more players!");
+            return false;
+        }
+
+        for(int i = 0; i < creatingGame.getTeams().length; i++) {
+            if(creatingGame.getTeams()[i] == null) {
+                printToPlayer.println("Please choose Team Colors!");
+                return false;
+            }
+        }
+
+        if(creatingGame.getGameType() == null) {
+            printToPlayer.println("Set Game Type!");
+            return false;
+        }
+
+        if(creatingGame.getDifficulty() == 0) {
+            printToPlayer.println("Set Game Difficulty!");
+            return false;
+        }
+
+        return true;
     }
 
     private String setGameName() {
@@ -295,8 +333,8 @@ public class PlayerHandler implements Runnable {
     public void winGame() {
         // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
         printToPlayer.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
-        game.gameOver(this);
         gameOver = true;
+        game.gameOver(this);
         reset();
     }
 

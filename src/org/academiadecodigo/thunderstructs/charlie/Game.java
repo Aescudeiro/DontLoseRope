@@ -15,6 +15,7 @@ public class Game {
     private static final int MAX_SCORE = 100;
     private volatile int score;
     private volatile int activePlayers;
+    private volatile int gameCounter;
     private int numMaxPlayers;
     private int difficulty;
     private boolean fixedGame;
@@ -22,7 +23,7 @@ public class Game {
     private String name;
 
     private Team[] teams;
-    private PlayerHandler[] players;
+    private volatile PlayerHandler[] players;
     private GameType gameType;
 
 
@@ -31,6 +32,7 @@ public class Game {
         fixedGame = fixed;
         score = MAX_SCORE / 2;
         activePlayers = 0;
+        gameCounter = 0;
 
         teams = new Team[2];
         teams[0] = team1;
@@ -225,6 +227,7 @@ public class Game {
      * Resets actual room (if the game instance is fixed)
      */
     public void resetGameRoom() {
+        gameCounter++;
         score = MAX_SCORE / 2;
         activePlayers = 0;
         Arrays.fill(players, null);
@@ -232,17 +235,14 @@ public class Game {
 
     @Override
     public String toString() {
-        return "Game{" +
-                "score=" + score +
-                ", activePlayers=" + activePlayers +
-                ", numMaxPlayers=" + numMaxPlayers +
-                ", difficulty=" + difficulty +
-                ", fixedGame=" + fixedGame +
-                ", name='" + name + '\'' +
-                ", teams=" + Arrays.toString(teams) +
-                ", players=" + Arrays.toString(players) +
-                ", gameType=" + gameType +
-                '}';
+        return
+                " Name='" + name + '\'' +
+                ", ActivePlayers=" + activePlayers +
+                ", NumMaxPlayers=" + numMaxPlayers +
+                ", Difficulty=" + difficulty +
+                ", Teams=" + Arrays.toString(teams) +
+                ", GameType=" + gameType ;
+
     }
 
     /**
@@ -281,6 +281,11 @@ public class Game {
         return name;
     }
 
+    public synchronized int getGameCounter() {
+        return gameCounter;
+    }
+
+    //SETTERS
     public void setNumMaxPlayers(int numMaxPlayers) {
         this.numMaxPlayers = numMaxPlayers;
     }

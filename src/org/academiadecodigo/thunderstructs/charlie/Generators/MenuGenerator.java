@@ -107,6 +107,26 @@ public class MenuGenerator {
         return 0;
     }
 
+    public static int createGameMenuAgain(Prompt prompt) {
+
+        String[] menu = {"Set Game Name","Set Max Numbers", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
+
+        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
+        menuInputScanner.setMessage(Messages.CREATE_MENU);
+
+        int choice = prompt.getUserInput(menuInputScanner);
+
+        if (choice == menu.length - 1) {
+            return -1;
+        }
+
+        if (choice < menu.length - 1) {
+            return choice;
+        }
+
+        return 0;
+    }
+
     public static String setGameName(Socket playerSocket) throws IOException {
 
         Scanner input = new Scanner(playerSocket.getInputStream());

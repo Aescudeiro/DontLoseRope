@@ -17,8 +17,15 @@ public class Client {
 
     public Client(String[] args) {
 
+        Scanner input = new Scanner(System.in);
+        System.out.print("Hostname: ");
+        String host = input.nextLine();
+
+        System.out.print("Port number: ");
+        String port = input.nextLine();
+
         try {
-            socket = new Socket(args[0], Integer.parseInt(args[1]));
+            socket = new Socket(host, Integer.parseInt(port));
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
