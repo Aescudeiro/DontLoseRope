@@ -32,10 +32,9 @@ public class MenuGenerator {
 
         String[] menu = {"Join game", "Create game", "How to play", "Quit"};
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.MAIN_MENU);
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.MAIN_MENU;
 
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, msg, menu);
 
         if (choice <= menu.length - 1) {
             return choice;
@@ -44,14 +43,12 @@ public class MenuGenerator {
         return 0;
 
     }
+
     public static int menuAfterMatch(Prompt prompt) {
 
         String[] menu = {"Join game", "Create game", "How to play", "Quit"};
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(Messages.MAIN_MENU);
-
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, Messages.MAIN_MENU, menu);
 
         if (choice <= menu.length - 1) {
             return choice;
@@ -66,6 +63,7 @@ public class MenuGenerator {
         // TODO: 09/11/2019 add dynamic player number to game (gamename [players/maxplayers])
 
         String[] games = new String[Server.getGames().size() + 1];
+        games[games.length - 1] = "Go back";
 
         int counter = 0;
         for (Game game : Server.getGames().values()) {
@@ -73,12 +71,9 @@ public class MenuGenerator {
             counter++;
         }
 
-        games[games.length - 1] = "Go back";
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.JOIN_GAME;
 
-        MenuInputScanner menu = new MenuInputScanner(games);
-        menu.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.JOIN_GAME);
-
-        int choice = prompt.getUserInput(menu);
+        int choice = buildMenu(prompt, msg, games);
 
         if (choice < games.length) {
             return choice;
@@ -91,10 +86,9 @@ public class MenuGenerator {
 
         String[] menu = {"Set Game Name","Set Max Numbers", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CREATE_MENU);
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CREATE_MENU;
 
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, msg, menu);
 
         if (choice == menu.length - 1) {
             return -1;
@@ -111,10 +105,7 @@ public class MenuGenerator {
 
         String[] menu = {"Set Game Name","Set Max Numbers", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(Messages.CREATE_MENU);
-
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, Messages.CREATE_MENU, menu);
 
         if (choice == menu.length - 1) {
             return -1;
@@ -226,10 +217,9 @@ public class MenuGenerator {
 
         String[] menu = {"Easy" , "Normal", "Hard", "SUPER", "Go back"};
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_DIFFICULTY);
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_DIFFICULTY;
 
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, msg, menu);
 
         if (choice < menu.length){
             return choice;
@@ -244,17 +234,12 @@ public class MenuGenerator {
         }
 
         String[] teams = game.getAvailableTeams();
-
         teams[teams.length - 1] = "Go back";
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_TEAM_COLOR;
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_TEAM_COLOR);
-
-        int choice = prompt.getUserInput(menuInputScanner);
+        int choice = buildMenu(prompt, msg, teams);
 
         Team[] teamTypes = game.getTeams();
-        //Team[] teamTypes = new Team[game.getAvailableTeams().length];
-        //for(int i = 0; i < teamTypes.length; i++) {}
 
         if(teams.length == 2) {
             for (Team t : teamTypes) {
@@ -271,6 +256,12 @@ public class MenuGenerator {
         }
 
         return null;
+    }
+
+    private static int buildMenu(Prompt prompt, String menuMessage, String [] menuOptions){
+        MenuInputScanner menu = new MenuInputScanner(menuOptions);
+        menu.setMessage(menuMessage);
+        return prompt.getUserInput(menu);
     }
 
 }

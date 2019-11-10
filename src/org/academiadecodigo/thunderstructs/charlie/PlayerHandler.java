@@ -2,10 +2,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-import org.academiadecodigo.thunderstructs.charlie.Generators.ChallengeGenerator;
-import org.academiadecodigo.thunderstructs.charlie.Generators.Count;
-import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
-import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Generators.*;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 import org.w3c.dom.ls.LSOutput;
@@ -99,7 +96,7 @@ public class PlayerHandler implements Runnable {
                     createNewGame();
                     break;
                 case 3:
-                    printToPlayer.println(GFXGenerator.showGameInstructions());
+                    printToPlayer.println(GFXGenerator.generateInfoBox(Messages.gameInstructions, TextAlign.LEFT));
                     break;
             }
 
