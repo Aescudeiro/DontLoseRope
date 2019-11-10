@@ -103,7 +103,7 @@ public class MenuGenerator {
 
     public static int createGameMenuAgain(Prompt prompt) {
 
-        String[] menu = {"Set Game Name","Set Max Numbers", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
+        String[] menu = {"Set Game Name","Set Max Players", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
 
         int choice = buildMenu(prompt, Messages.CREATE_MENU, menu);
 

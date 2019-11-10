@@ -236,12 +236,12 @@ public class Game {
     @Override
     public String toString() {
         return
-                " Name='" + name + '\'' +
-                ", ActivePlayers=" + activePlayers +
-                ", NumMaxPlayers=" + numMaxPlayers +
-                ", Difficulty=" + difficulty +
-                ", Teams=" + Arrays.toString(teams) +
-                ", GameType=" + gameType ;
+                "\n#GAME#\n" +
+                "Name:" + name +
+                " | Max Players: " + numMaxPlayers +
+                " | Teams: " + Arrays.toString(teams) +
+                " | GameType: " + gameType +
+                " | Difficulty: " + difficulty;
 
     }
 
