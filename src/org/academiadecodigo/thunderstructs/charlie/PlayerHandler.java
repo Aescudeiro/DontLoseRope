@@ -47,20 +47,20 @@ public class PlayerHandler implements Runnable {
     public void run() {
 
         try {
-            this.name = MenuGenerator.askName(playerSocket);
+            this.name = MenuGenerator.askName(prompt);
             joinPlayerMap();
 
             int menuOption;
 
             while (!quit) {
                 if(!gameOver){
-                     menuOption = MenuGenerator.mainMenu(prompt);
+                     menuOption = MenuGenerator.mainMenu(prompt,true);
                     System.out.println("menu sent, option: " + menuOption);
 
                     playerRun(menuOption);
                     continue;
                 }
-                menuOption =  MenuGenerator.menuAfterMatch(prompt);
+                menuOption =  MenuGenerator.mainMenu(prompt,false);
                 playerRun(menuOption);
                 gameOver = false;
             }
@@ -183,7 +183,7 @@ public class PlayerHandler implements Runnable {
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         int menuChoice;
-        menuChoice= MenuGenerator.createGameMenu(prompt);
+        menuChoice= MenuGenerator.createGameMenu(prompt,true,creatingGame);
 
         while (!createGame) {
 
@@ -231,7 +231,7 @@ public class PlayerHandler implements Runnable {
             }
 
             if (!createGame) {
-                menuChoice = MenuGenerator.createGameMenuAgain(prompt);
+                menuChoice = MenuGenerator.createGameMenu(prompt, false, creatingGame);
             }
 
         }
@@ -275,8 +275,8 @@ public class PlayerHandler implements Runnable {
     private String setGameName() {
 
         try {
-            return MenuGenerator.setGameName(playerSocket);
-        } catch (IOException e) {
+            return MenuGenerator.setGameName(prompt);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -285,8 +285,8 @@ public class PlayerHandler implements Runnable {
     private int setPlayerAmount() {
 
         try {
-            return MenuGenerator.setMaxNumbers(playerSocket);
-        } catch (IOException e) {
+            return MenuGenerator.setMaxNumbers(prompt);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -296,7 +296,7 @@ public class PlayerHandler implements Runnable {
 
         while (true) {
 
-            int selectedTeam = MenuGenerator.selectTeam(prompt);
+            int selectedTeam = MenuGenerator.selectTeam(prompt,creatingGame);
 
             switch (selectedTeam) {
                 case 0:
@@ -329,6 +329,15 @@ public class PlayerHandler implements Runnable {
                 break;
 
             case WORDS:
+                game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
+                break;
+
+            case MIXED:
+                int randomChallenge = (int) (Math.random() * 10);
+                if (randomChallenge < 5) {
+                    game.checkEquation(ChallengeGenerator.generateEquation(game.getDifficulty()), player);
+                    break;
+                }
                 game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
                 break;
         }

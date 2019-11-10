@@ -16,6 +16,8 @@ public class Messages {
     public static final String SET_TEAM_COLOR = Color.ANSI_GREEN + "Choose Team Color" + MENU_LINE + Color.ANSI_RESET;
     public static final String SET_GAME_TYPE = Color.ANSI_GREEN + "Choose Game Type" + MENU_LINE + Color.ANSI_RESET;
     public static final String SET_DIFFICULTY = Color.ANSI_GREEN + "Choose Game Difficulty" + MENU_LINE + Color.ANSI_RESET;
+    public static final String GAME_NAME = Color.ANSI_GREEN + "Please insert the game name: " + MENU_LINE + Color.ANSI_RESET;
+    public static final String SET_MAX_PLAYERS = Color.ANSI_GREEN + "Set max player number: " + MENU_LINE + Color.ANSI_RESET;
 
     public static final String CORRECT_ANSWER = "Your answer was correct!";
     public static final String WRONG_ANSWER = "Your answer was wrong...";

@@ -1,12 +1,15 @@
 package org.academiadecodigo.thunderstructs.charlie.Generators;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Game;
 import org.academiadecodigo.thunderstructs.charlie.GameType;
 import org.academiadecodigo.thunderstructs.charlie.Server;
 import org.academiadecodigo.thunderstructs.charlie.Team;
+import org.academiadecodigo.thunderstructs.charlie.Utilities.Color;
 import org.academiadecodigo.thunderstructs.charlie.Utilities.Messages;
 
 import java.io.IOException;
@@ -17,38 +20,25 @@ import java.util.*;
 
 public class MenuGenerator {
 
-    public static String askName(Socket playerSocket) throws IOException {
+    public static String askName(Prompt prompt){
 
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
+        StringInputScanner stringInputScanner  = new StringInputScanner();
+        stringInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
 
-        printWriter.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.WELCOME);
-
-        return input.nextLine();
+        return prompt.getUserInput(stringInputScanner);
 
     }
 
-    public static int mainMenu(Prompt prompt) {
+    public static int mainMenu(Prompt prompt, boolean hasGameTitle) {
 
         String[] menu = {"Join game", "Create game", "How to play", "Quit"};
 
-        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.MAIN_MENU;
-
-        int choice = buildMenu(prompt, msg, menu);
-
-        if (choice <= menu.length - 1) {
-            return choice;
+        String msg = Messages.MAIN_MENU;
+        if(hasGameTitle){
+            msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.MAIN_MENU;
         }
 
-        return 0;
-
-    }
-
-    public static int menuAfterMatch(Prompt prompt) {
-
-        String[] menu = {"Join game", "Create game", "How to play", "Quit"};
-
-        int choice = buildMenu(prompt, Messages.MAIN_MENU, menu);
+        int choice = buildMenu(prompt, msg, menu);
 
         if (choice <= menu.length - 1) {
             return choice;
@@ -82,18 +72,45 @@ public class MenuGenerator {
         return 0;
     }
 
-    public static int createGameMenu(Prompt prompt) {
+    public static int createGameMenu(Prompt prompt, boolean hasGameTitle, Game game) {
 
-        String[] menu = {"Set Game Name","Set Max Numbers", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
+        String color = Color.ANSI_YELLOW;
+        String resetColor = Color.ANSI_RESET;
 
-        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CREATE_MENU;
+        String teams = "";
+        if(game.getTeams()[0] == null && game.getTeams()[1] == null){
+            teams = " ";
+        }
+
+        if (game.getTeams()[1] != null && game.getTeams()[0] == null){
+            teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + color + ", add team 2" + resetColor + ")";
+        }
+
+        if (game.getTeams()[0] != null && game.getTeams()[1] == null){
+            teams = " (" + color + "add team 1, " + resetColor + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + ")";
+        }
+
+        if (game.getTeams()[0] != null && game.getTeams()[1] != null){
+            teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + ", " + resetColor + game.getTeams()[1].getColor() + game.getTeams()[1].toString().toLowerCase() + resetColor + ")";
+        }
+
+        String[] menu = {
+                "Set game name" + (game.getName() == null ? " " : color + " (" + game.getName() + ")" + resetColor),
+                "Set max players" + (game.getNumMaxPlayers() == 0 ? " " :  color + " (" + game.getNumMaxPlayers() + ")" + resetColor),
+                "Set team" + teams,
+                "Set game type" + (game.getGameType() == null ? " " : color + " (" + game.getGameType().toString().toLowerCase() + ")" + resetColor),
+                "Set difficulty" + (game.getDifficulty() == 0 ? " " : color + " (" + game.getDifficulty() + ")" + resetColor),
+                "Create Game",
+                "Cancel"
+        };
+
+        String msg = Messages.CREATE_MENU;
+        if(hasGameTitle){
+            msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.CREATE_MENU;
+        }
 
         int choice = buildMenu(prompt, msg, menu);
 
-        if (choice == menu.length - 1) {
-            return -1;
-        }
-
         if (choice < menu.length - 1) {
             return choice;
         }
@@ -101,59 +118,44 @@ public class MenuGenerator {
         return 0;
     }
 
-    public static int createGameMenuAgain(Prompt prompt) {
+    public static String setGameName(Prompt prompt) {
 
-        String[] menu = {"Set Game Name","Set Max Players", "Set Team Colors", "Set Game Type", "Set Game Difficulty", "Create Game",  "Go back"};
+        StringInputScanner stringInputScanner  = new StringInputScanner();
+        stringInputScanner.setMessage(Messages.GAME_NAME);
 
-        int choice = buildMenu(prompt, Messages.CREATE_MENU, menu);
-
-        if (choice == menu.length - 1) {
-            return -1;
-        }
-
-        if (choice < menu.length - 1) {
-            return choice;
-        }
-
-        return 0;
-    }
-
-    public static String setGameName(Socket playerSocket) throws IOException {
-
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
-
-        printWriter.println("Set game name: ");
-
-        return input.nextLine();
+        return prompt.getUserInput(stringInputScanner);
 
     }
 
-    public static int setMaxNumbers(Socket playerSocket) throws IOException {
+    public static int setMaxNumbers(Prompt prompt) {
 
-        Scanner input = new Scanner(playerSocket.getInputStream());
-        PrintWriter printWriter = new PrintWriter(playerSocket.getOutputStream(), true);
+        IntegerInputScanner integerInputScanner = new IntegerInputScanner();
+        integerInputScanner.setMessage(Messages.SET_MAX_PLAYERS);
 
-        printWriter.println("Set max player number: ");
-
-        int maxNumber = Integer.parseInt(input.nextLine());
+        int maxNumber = prompt.getUserInput(integerInputScanner);
 
         if (maxNumber < 2) {
-            setMaxNumbers(playerSocket);
+            setMaxNumbers(prompt);
         }
 
         return maxNumber;
 
     }
 
-    public static int selectTeam(Prompt prompt){
+    public static int selectTeam(Prompt prompt, Game game){
 
-        String[] teams = {"TEAM ONE","TEAM TWO","Go back"};
+        String color = Color.ANSI_YELLOW;
+        String resetColor = Color.ANSI_RESET;
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(teams);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SELECT_TEAM);
+        String[] teams = {
+                "TEAM ONE" + (game.getTeams()[0] == null ? " " : game.getTeams()[0].getColor() + " (" + game.getTeams()[0].toString().toLowerCase() + ")" + resetColor),
+                "TEAM TWO" + (game.getTeams()[1] == null ? " " : game.getTeams()[1].getColor() + " (" + game.getTeams()[1].toString().toLowerCase() + ")" + resetColor),
+                "Go back"
+        };
 
-        int choice = prompt.getUserInput(menuInputScanner);
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SELECT_TEAM;
+
+        int choice = buildMenu(prompt, msg, teams);
 
         if (choice < teams.length){
             return choice;
@@ -193,23 +195,23 @@ public class MenuGenerator {
     public static GameType setGameType(Prompt prompt) {
 
         String[] menu = new String[GameType.values().length + 1];
-
-        for ( int i = 0; i < menu.length - 1; i++) {
-            menu[i] = String.valueOf(GameType.values()[i]);
-        }
-
         menu[menu.length - 1] = "Go back";
 
-        MenuInputScanner menuInputScanner = new MenuInputScanner(menu);
-        menuInputScanner.setMessage(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_GAME_TYPE);
+        int counter = 0;
+        for(GameType gt : GameType.values()){
+            menu[counter] = gt.toString();
+            counter++;
+        }
 
-        int choice = prompt.getUserInput(menuInputScanner);
+        String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SET_GAME_TYPE;
 
+        int choice = buildMenu(prompt, msg, menu);
 
         if (choice < GameType.values().length + 1) {
             System.out.println(GameType.values()[choice -1]);
             return GameType.values()[choice -1];
         }
+
         return null;
     }
 
