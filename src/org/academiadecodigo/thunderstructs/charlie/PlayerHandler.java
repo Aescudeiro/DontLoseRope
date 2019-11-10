@@ -53,17 +53,19 @@ public class PlayerHandler implements Runnable {
             int menuOption = -1;
 
             while (!quit) {
-                if(!gameOver){
+                if (!gameOver) {
+
                     if (menuOption == 3) {
                         menuOption = MenuGenerator.mainMenu(prompt, false);
                     } else {
-                        menuOption = MenuGenerator.mainMenu(prompt,true);
+                        menuOption = MenuGenerator.mainMenu(prompt, false);
                     }
 
                     playerRun(menuOption);
                     continue;
                 }
-                menuOption =  MenuGenerator.mainMenu(prompt,false);
+
+                menuOption = MenuGenerator.mainMenu(prompt, false);
                 playerRun(menuOption);
                 gameOver = false;
             }
@@ -108,7 +110,7 @@ public class PlayerHandler implements Runnable {
                 joinGame();
             }
 
-        } catch (InterruptedException ie){
+        } catch (InterruptedException ie) {
             System.err.println("Something went wrong with Count Down");
         }
 
@@ -148,14 +150,23 @@ public class PlayerHandler implements Runnable {
     }
 
 
-    public void joinGame() throws InterruptedException{
+    public void joinGame() throws InterruptedException {
 
-        printToPlayer.println(name + " has joined " + team + " team in " + game.toString() + " game.\nWaiting for players...\n");
+        printToPlayer.println(name + " has joined " + team + " team in " + game.getName() + " game.\n");
         game.addPlayer(this);
 
         gameID = game.getGameCounter();
 
+        printToPlayer.append("Waiting for players");
+        printToPlayer.flush();
+
+
         while (game.getActivePlayers() != game.getNumMaxPlayers()) {
+
+            printToPlayer.append(".");
+            printToPlayer.flush();
+            Thread.sleep(1000);
+
         }
 
         startCountDown(printToPlayer);
@@ -176,16 +187,16 @@ public class PlayerHandler implements Runnable {
         return MenuGenerator.chooseTeam(prompt, game);
     }
 
-    public void createNewGame(){
+    public void createNewGame() {
 
         boolean createGame = false;
-        Game creatingGame = new Game(null,0, null, 0, null,null,true);
+        Game creatingGame = new Game(null, 0, null, 0, null, null, true);
 
         currentGameInfo = creatingGame.toString();
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         int menuChoice;
-        menuChoice= MenuGenerator.createGameMenu(prompt,true,creatingGame);
+        menuChoice = MenuGenerator.createGameMenu(prompt, true, creatingGame);
 
         while (!createGame) {
 
@@ -193,7 +204,7 @@ public class PlayerHandler implements Runnable {
 
                 case -1:
                     System.err.println("chose: " + menuChoice);
-                    if(!isAllSet(creatingGame)){
+                    if (!isAllSet(creatingGame)) {
                         break;
                     }
                     createGame = true;
@@ -254,29 +265,29 @@ public class PlayerHandler implements Runnable {
 
     public boolean isAllSet(Game creatingGame) {
         System.err.println("entered is all set" + creatingGame.toString());
-        if(creatingGame.getName() == null) {
+        if (creatingGame.getName() == null) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set game name!");
             return false;
         }
 
-        if(creatingGame.getNumMaxPlayers() <= 1) {
+        if (creatingGame.getNumMaxPlayers() <= 1) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Insert 2 or more players!");
             return false;
         }
 
-        for(int i = 0; i < creatingGame.getTeams().length; i++) {
-            if(creatingGame.getTeams()[i] == null) {
+        for (int i = 0; i < creatingGame.getTeams().length; i++) {
+            if (creatingGame.getTeams()[i] == null) {
                 printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Please choose Team Colors!");
                 return false;
             }
         }
 
-        if(creatingGame.getGameType() == null) {
+        if (creatingGame.getGameType() == null) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set Game Type!");
             return false;
         }
 
-        if(creatingGame.getDifficulty() == 0) {
+        if (creatingGame.getDifficulty() == 0) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set Game Difficulty!");
             return false;
         }
@@ -308,7 +319,7 @@ public class PlayerHandler implements Runnable {
 
         while (true) {
 
-            int selectedTeam = MenuGenerator.selectTeam(prompt,creatingGame);
+            int selectedTeam = MenuGenerator.selectTeam(prompt, creatingGame);
 
             switch (selectedTeam) {
                 case 0:
@@ -355,12 +366,15 @@ public class PlayerHandler implements Runnable {
         }
     }
 
-    public void winGame() {
+    public synchronized void winGame() {
         // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
         printToPlayer.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
         gameOver = true;
         game.gameOver(this);
         reset();
+
+        //int menuOption = MenuGenerator.mainMenu(prompt, false);
+        //playerRun(menuOption);
     }
 
     public void reset() {
@@ -378,9 +392,9 @@ public class PlayerHandler implements Runnable {
 
     private void startCountDown(PrintWriter printToPlayer) throws InterruptedException {
 
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
 
-            switch(i){
+            switch (i) {
                 case 0:
                     printToPlayer.println(GFXGenerator.drawCountDown(Count.READY));
                     Thread.sleep(1000);

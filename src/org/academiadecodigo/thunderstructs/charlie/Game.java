@@ -2,6 +2,7 @@ package org.academiadecodigo.thunderstructs.charlie;
 
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.thunderstructs.charlie.Generators.GFXGenerator;
+import org.academiadecodigo.thunderstructs.charlie.Generators.MenuGenerator;
 
 import java.util.Arrays;
 
@@ -85,9 +86,9 @@ public class Game {
 
         int team1 = 0;
         int team2 = 0;
-        if(activePlayers > 0){
-            for(int i = 0; i < activePlayers; i++) {
-                if(players[i].getTeam() == teams[0]){
+        if (activePlayers > 0) {
+            for (int i = 0; i < activePlayers; i++) {
+                if (players[i].getTeam() == teams[0]) {
                     team1++;
                     continue;
                 }
@@ -95,8 +96,8 @@ public class Game {
             }
 
             String[] team = new String[2];
-            if((activePlayers == numMaxPlayers-1) && (team1 == 0 || team2 == 0)) {
-                if(team1 == 0) {
+            if ((activePlayers == numMaxPlayers - 1) && (team1 == 0 || team2 == 0)) {
+                if (team1 == 0) {
                     team[0] = teams[0].toString();
                     return team;
                 }
@@ -109,16 +110,22 @@ public class Game {
 
     /**
      * End game screen and game room resetter:
-     *
+     * <p>
      * If game is fixed, resets game room;
      * If game is not fixed, deletes room from Server's games HashMap;
      *
      * @param playerHandler Player reference that scored the final points
      */
     //TODO: Refactor name
-    public void gameOver(PlayerHandler playerHandler) {
+    public synchronized void gameOver(PlayerHandler playerHandler) {
 
         winner();
+
+/*        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
 
         if (temporaryGame) {
             for (Game game : Server.getGames().values()) {
@@ -137,7 +144,7 @@ public class Game {
     /**
      * Check if player answer (word) is correct
      *
-     * @param word correct answer to the challenge (to be compared to player answer)
+     * @param word          correct answer to the challenge (to be compared to player answer)
      * @param playerHandler reference of the player that answered
      */
     public void checkWord(String word, PlayerHandler playerHandler) {
@@ -153,7 +160,7 @@ public class Game {
     /**
      * Check if player answer (number) is correct
      *
-     * @param numbers String[] that contains the equation (numbers[0]) and the answer (numbers[1])
+     * @param numbers       String[] that contains the equation (numbers[0]) and the answer (numbers[1])
      * @param playerHandler reference of the player that answered
      */
     public void checkEquation(String[] numbers, PlayerHandler playerHandler) {
@@ -162,7 +169,6 @@ public class Game {
         ask.setMessage(GFXGenerator.drawRope(score, teams[0], teams[1]) + numbers[0] + " = ?? \n");
 
         if (playerHandler.getPrompt().getUserInput(ask).equals(numbers[1])) {
-            //score += playerHandler.getTeam().getValue();
             updateScore(playerHandler);
         }
     }
@@ -182,7 +188,6 @@ public class Game {
             return;
         }
         score += points;
-        System.out.println(score);
     }
 
     /**
@@ -201,7 +206,7 @@ public class Game {
 
     /**
      * Broadcast final message:
-     *
+     * <p>
      * You won for the winning team;
      * Game Over for the losing team;
      *
@@ -237,11 +242,11 @@ public class Game {
     public String toString() {
         return
                 "\n#GAME#\n" +
-                "Name:" + name +
-                " | Max Players: " + numMaxPlayers +
-                " | Teams: " + Arrays.toString(teams) +
-                " | GameType: " + gameType +
-                " | Difficulty: " + difficulty;
+                        "Name:" + name +
+                        " | Max Players: " + numMaxPlayers +
+                        " | Teams: " + Arrays.toString(teams) +
+                        " | GameType: " + gameType +
+                        " | Difficulty: " + difficulty;
 
     }
 
