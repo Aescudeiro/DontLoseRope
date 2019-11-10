@@ -331,6 +331,15 @@ public class PlayerHandler implements Runnable {
             case WORDS:
                 game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
                 break;
+
+            case MIXED:
+                int randomChallenge = (int) (Math.random() * 10);
+                if (randomChallenge < 5) {
+                    game.checkEquation(ChallengeGenerator.generateEquation(game.getDifficulty()), player);
+                    break;
+                }
+                game.checkWord(ChallengeGenerator.generateWord(game.getDifficulty()), player);
+                break;
         }
     }
 
