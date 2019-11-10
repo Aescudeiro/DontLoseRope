@@ -48,20 +48,6 @@ public class MenuGenerator {
 
     }
 
-    public static int menuAfterMatch(Prompt prompt) {
-
-        String[] menu = {"Join game", "Create game", "How to play", "Quit"};
-
-        int choice = buildMenu(prompt, Messages.MAIN_MENU, menu);
-
-        if (choice <= menu.length - 1) {
-            return choice;
-        }
-
-        return 0;
-
-    }
-
     public static int joinGame(Prompt prompt) {
 
         // TODO: 09/11/2019 add dynamic player number to game (gamename [players/maxplayers])
@@ -91,12 +77,29 @@ public class MenuGenerator {
         String color = Color.ANSI_YELLOW;
         String resetColor = Color.ANSI_RESET;
 
+        String teams = "";
+        if(game.getTeams()[0] == null && game.getTeams()[1] == null){
+            teams = " ";
+        }
+
+        if (game.getTeams()[1] != null && game.getTeams()[0] == null){
+            teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + color + ", add team 2" + resetColor + ")";
+        }
+
+        if (game.getTeams()[0] != null && game.getTeams()[1] == null){
+            teams = " (" + color + "add team 1, " + resetColor + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + resetColor + ")";
+        }
+
+        if (game.getTeams()[0] != null && game.getTeams()[1] != null){
+            teams = " (" + game.getTeams()[0].getColor() + game.getTeams()[0].toString().toLowerCase() + ", " + resetColor + game.getTeams()[1].getColor() + game.getTeams()[1].toString().toLowerCase() + resetColor + ")";
+        }
+
         String[] menu = {
-                "Set Game Name" + ((game.getName() != null) ? color + "(" + game.getName() + ")" + resetColor : ""),
-                "Set Max Numbers" + ((game.getNumMaxPlayers()  != 0) ? color + "(" + game.getNumMaxPlayers() + ")" + resetColor : ""),
-                "Set Team Colors" + ((game.getTeams().length  != 0) ? color + "(" + game.getTeams()[0].toString() + ", " + game.getTeams()[1].toString() + ")" + resetColor : ""),
-                "Set Game Type" + ((game.getGameType()  != null) ? color + "(" + game.getGameType().toString() + ")" + resetColor : ""),
-                "Set Game Difficulty" + ((game.getDifficulty()  != 0) ? color + "(" + game.getDifficulty() + ")" + resetColor : ""),
+                "Set game name" + (game.getName() == null ? " " : color + " (" + game.getName() + ")" + resetColor),
+                "Set max players" + (game.getNumMaxPlayers() == 0 ? " " :  color + " (" + game.getNumMaxPlayers() + ")" + resetColor),
+                "Set team" + teams,
+                "Set game type" + (game.getGameType() == null ? " " : color + " (" + game.getGameType().toString().toLowerCase() + ")" + resetColor),
+                "Set difficulty" + (game.getDifficulty() == 0 ? " " : color + " (" + game.getDifficulty() + ")" + resetColor),
                 "Create Game",
                 "Cancel"
         };
@@ -107,10 +110,6 @@ public class MenuGenerator {
         }
 
         int choice = buildMenu(prompt, msg, menu);
-
-        if (choice == menu.length - 1) {
-            return -1;
-        }
 
         if (choice < menu.length - 1) {
             return choice;
@@ -153,9 +152,10 @@ public class MenuGenerator {
         String resetColor = Color.ANSI_RESET;
 
         String[] teams = {
-                "TEAM ONE" + ((game.getTeams()[0]  != null) ? color + "(" + game.getTeams()[0].toString() + resetColor : ""),
-                "TEAM TWO" + ((game.getTeams()[1]  != null) ? color + "(" + game.getTeams()[1].toString() + resetColor : ""),
-                "Go back"};
+                "TEAM ONE" + (game.getTeams()[0] == null ? " " : game.getTeams()[0].getColor() + " (" + game.getTeams()[0].toString().toLowerCase() + ")" + resetColor),
+                "TEAM TWO" + (game.getTeams()[1] == null ? " " : game.getTeams()[1].getColor() + " (" + game.getTeams()[1].toString().toLowerCase() + ")" + resetColor),
+                "Go back"
+        };
 
         String msg = GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + Messages.SELECT_TEAM;
 

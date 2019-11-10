@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class PlayerHandler implements Runnable {
 
@@ -200,26 +201,32 @@ public class PlayerHandler implements Runnable {
 
                 case 1:
                     creatingGame.setName(setGameName());
-                    printToPlayer.println("Game name set to: " + creatingGame.getName());
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
+                            "Game name set to: " + creatingGame.getName() + creatingGame.toString());
                     break;
 
                 case 2:
                     creatingGame.setNumMaxPlayers(setPlayerAmount());
-                    printToPlayer.println("Max players set to: " + creatingGame.getNumMaxPlayers());
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
+                            "Max players set to: " + creatingGame.getNumMaxPlayers() + creatingGame.toString());
                     break;
 
                 case 3:
                     selectTeam(creatingGame);
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
+                            "Team colors set to: " + Arrays.toString(creatingGame.getTeams()) + creatingGame.toString());
                     break;
 
                 case 4:
                     creatingGame.setGameType(setGameType());
-                    printToPlayer.println("Game type set to: " + creatingGame.getGameType().toString());
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
+                            "Game type set to: " + creatingGame.getGameType().toString() + creatingGame.toString());
                     break;
 
                 case 5:
                     creatingGame.setDifficulty(setGameDifficulty());
-                    printToPlayer.println("Game difficulty set to: " + creatingGame.getDifficulty());
+                    printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
+                            "Game difficulty set to: " + creatingGame.getDifficulty() + creatingGame.toString());
                     break;
             }
 
