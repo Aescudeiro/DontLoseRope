@@ -21,7 +21,7 @@ public class Game {
     private int difficulty;
     private boolean temporaryGame;
 
-    private static String[] gameStats;
+    private String[] gameStats;
 
     private String name;
 
@@ -43,7 +43,6 @@ public class Game {
 
         gameType = type;
         this.name = name;
-        this.numMaxPlayers = numMaxPlayers;
         this.difficulty = difficulty;
 
         gameStats = new String[numMaxPlayers];
@@ -308,6 +307,10 @@ public class Game {
     //SETTERS
     public void setNumMaxPlayers(int numMaxPlayers) {
         this.numMaxPlayers = numMaxPlayers;
+    }
+
+    public void setGameStats(int numMaxPlayers) {
+        gameStats = new String[numMaxPlayers];
     }
 
     public void setPlayers(int numMaxPlayers) {

@@ -260,6 +260,7 @@ public class PlayerHandler implements Runnable {
 
         }
 
+        creatingGame.setGameStats(creatingGame.getNumMaxPlayers());
         creatingGame.setPlayers(creatingGame.getNumMaxPlayers());
         Server.getGames().put(creatingGame.getName(), creatingGame);
 
