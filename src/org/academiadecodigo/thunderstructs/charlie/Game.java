@@ -17,9 +17,11 @@ public class Game {
     private volatile int score;
     private volatile int activePlayers;
     private volatile int gameCounter;
-    private int numMaxPlayers;
+    private static int numMaxPlayers;
     private int difficulty;
     private boolean temporaryGame;
+
+    private static String[] gameStats;
 
     private String name;
 
@@ -44,6 +46,7 @@ public class Game {
         this.numMaxPlayers = numMaxPlayers;
         this.difficulty = difficulty;
 
+        gameStats = new String[numMaxPlayers];
         players = new PlayerHandler[numMaxPlayers];
 
     }
@@ -121,12 +124,6 @@ public class Game {
 
         winner();
 
-/*        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
         if (temporaryGame) {
             for (Game game : Server.getGames().values()) {
                 if (game.equals(this)) {
@@ -183,6 +180,10 @@ public class Game {
         int points = teams.length * Server.TEAM_SCORE / numMaxPlayers;
         playerHandler.increaseCorrectAnswers();
 
+        if(points < 3){
+            points = 3;
+        }
+
         if (playerHandler.getTeam() == teams[0]) {
             score -= points;
             System.out.println(score);
@@ -213,18 +214,31 @@ public class Game {
      *
      * @param team reference for the winning team
      */
-    public void announceWinner(Team team) {
+    public synchronized void announceWinner(Team team) {
+
+        for(int i = 0; i < players.length; i++){
+            System.err.println("sjkdnbaklsdjbaskjd");
+            String s =  players[i].getName() + ": " + players[i].getCorrectAnswers();
+            System.out.println(players[i].getName());
+            System.err.println(s);
+            System.out.println(players[i].getCorrectAnswers());
+            gameStats[i] = s;
+            System.err.println(s);
+        }
 
         for (PlayerHandler playerHandler : players) {
 
             if (playerHandler.getTeam() == team) {
                 playerHandler.getOutputStream().println(
-                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
+                        GFXGenerator.drawYouWon(playerHandler.getTeam().getColor(), score, teams[0], teams[1]) +
+                               "\n" + GFXGenerator.drawTable(gameStats, 4, "GAME STATS (CORRECT ANSWERS)"));
+
                 continue;
             }
 
             playerHandler.getOutputStream().println(
-                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, teams[0], teams[1]));
+                    GFXGenerator.drawGameOver(playerHandler.getTeam().getColor(), score, teams[0], teams[1])+
+                            "\n" + GFXGenerator.drawTable(gameStats, 4, "GAME STATS (CORRECT ANSWERS)"));
         }
 
     }

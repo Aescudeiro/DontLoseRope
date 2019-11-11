@@ -209,7 +209,7 @@ public class GFXGenerator {
         String[] cells = new String[cols];
         for (int i = 0; i < lines; i++) {
             for (int j = 0; j < cols; j++) {
-                if(cellContent[counter] != null && (counter < (cols*lines - 1))){
+                if(counter < cellContent.length && cellContent[counter] != null){
                     cells[j] = cellContent[counter];
                 } else {
                     cells[j] = " ".repeat(cellSize);
@@ -242,7 +242,7 @@ public class GFXGenerator {
             stat += content[i] + fillCell;
         }
 
-        row = " #" + " ".repeat(MARGIN - 1) + stat + " ".repeat(MARGIN - 1) + "#\n";
+        row = " #" + " ".repeat(MARGIN) + stat + " ".repeat(MARGIN) + "#\n";
 
         return row;
 
@@ -308,4 +308,10 @@ public class GFXGenerator {
         return "Ops... Something went wrong. Unable to create this line";
     }
 
+
+    public static void main(String[] args) {
+        String[] test = {"rafa 0", "furnas 100", "karolis 0" };
+
+        System.out.println(drawTable(test, 4, null));
+    }
 }
