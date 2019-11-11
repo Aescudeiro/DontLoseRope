@@ -17,11 +17,9 @@ public class Game {
     private volatile int score;
     private volatile int activePlayers;
     private volatile int gameCounter;
-    private static int numMaxPlayers;
+    private volatile int numMaxPlayers;
     private int difficulty;
     private boolean temporaryGame;
-
-    private String[] gameStats;
 
     private String name;
 
@@ -30,12 +28,13 @@ public class Game {
     private GameType gameType;
 
 
-    public Game(String name, int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean temporary) {
+    public Game(String name, int numMaxPlayers, GameType type, int difficulty, Team team1, Team team2, boolean isTemporary) {
 
-        temporaryGame = temporary;
+        temporaryGame = isTemporary;
         score = MAX_SCORE / 2;
         activePlayers = 0;
         gameCounter = 0;
+        this.numMaxPlayers = numMaxPlayers;
 
         teams = new Team[2];
         teams[0] = team1;
@@ -45,7 +44,6 @@ public class Game {
         this.name = name;
         this.difficulty = difficulty;
 
-        gameStats = new String[numMaxPlayers];
         players = new PlayerHandler[numMaxPlayers];
 
     }
@@ -71,7 +69,7 @@ public class Game {
     /**
      * Check if game room has empty slots
      *
-     * @return true if has game has PlayerHandler[] is not filled (has empty slots)
+     * @return true if PlayerHandler[] is not full (has empty slots)
      */
     //TODO: Refactor name
     public boolean hasEmptySlots() {
@@ -112,7 +110,7 @@ public class Game {
 
     /**
      * End game screen and game room resetter:
-     * <p>
+     *
      * If game is fixed, resets game room;
      * If game is not fixed, deletes room from Server's games HashMap;
      *
@@ -128,7 +126,7 @@ public class Game {
                 if (game.equals(this)) {
                     Server.getGames().remove(playerHandler.getGameRoom());
                     //return; //(if not commented, does not remove the !fixed game.
-                    System.out.println("removed game");
+                    System.out.println("game " + this.name + " removed from map");
                 }
             }
         }
@@ -215,12 +213,10 @@ public class Game {
      */
     public synchronized void announceWinner(Team team) {
 
+        String[] gameStats = new String[players.length];
         for(int i = 0; i < players.length; i++){
-            System.err.println("sjkdnbaklsdjbaskjd");
+
             String s =  players[i].getName() + ": " + players[i].getCorrectAnswers();
-            System.out.println(players[i].getName());
-            System.err.println(s);
-            System.out.println(players[i].getCorrectAnswers());
             gameStats[i] = s;
             System.err.println(s);
         }
@@ -307,10 +303,6 @@ public class Game {
     //SETTERS
     public void setNumMaxPlayers(int numMaxPlayers) {
         this.numMaxPlayers = numMaxPlayers;
-    }
-
-    public void setGameStats(int numMaxPlayers) {
-        gameStats = new String[numMaxPlayers];
     }
 
     public void setPlayers(int numMaxPlayers) {

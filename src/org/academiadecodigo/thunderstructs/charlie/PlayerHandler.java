@@ -83,14 +83,14 @@ public class PlayerHandler implements Runnable {
     /**
      * Add this player to the server players list.
      */
-    public void joinPlayerMap() {
+    private void joinPlayerMap() {
         Server.getPlayers().put(name, this);
     }
 
     /**
      * Main menu screen is shown to the player allowing them to choose from the menu options.
      */
-    public void playerRun(int menuOption) {
+    private void playerRun(int menuOption) {
 
         try {
             switch (menuOption) {
@@ -119,10 +119,7 @@ public class PlayerHandler implements Runnable {
 
     }
 
-    /**
-     *
-     */
-    public void chooseGameRoom() {
+    private void chooseGameRoom() {
 
         while (team == null) {
 
@@ -141,7 +138,7 @@ public class PlayerHandler implements Runnable {
         }
     }
 
-    public Game gameToEnter() {
+    private Game gameToEnter() {
 
         gameRoom = MenuGenerator.joinGame(prompt);
         if (gameRoom == null) {
@@ -152,7 +149,7 @@ public class PlayerHandler implements Runnable {
     }
 
 
-    public void joinGame() throws InterruptedException {
+    private void joinGame() throws InterruptedException {
 
         printToPlayer.println(name + " has joined " + team + " team in " + game.getName() + " game.\n");
         game.addPlayer(this);
@@ -174,7 +171,7 @@ public class PlayerHandler implements Runnable {
         startCountDown(printToPlayer);
 
         while (game.getScore() > 0 && game.getScore() < 100) {
-            // TODO: 08/11/2019 HARD: make it leave input when game over
+
             if (gameID != game.getGameCounter()) {
                 reset();
                 return;
@@ -185,20 +182,20 @@ public class PlayerHandler implements Runnable {
         winGame();
     }
 
-    public Team chooseTeam() {
+    private Team chooseTeam() {
         return MenuGenerator.chooseTeam(prompt, game);
     }
 
-    public void createNewGame() {
+    private void createNewGame() {
 
         boolean createGame = false;
-        Game creatingGame = new Game(null, 0, null, 0, null, null, true);
+        Game newGame = new Game(null, 0, null, 0, null, null, true);
 
-        currentGameInfo = creatingGame.toString();
+        currentGameInfo = newGame.toString();
         // TODO: 09/11/2019 add current game info as part of Create game menu so it appears after DONT LOSE ROPE, instead of after input
 
         int menuChoice;
-        menuChoice = MenuGenerator.createGameMenu(prompt, true, creatingGame);
+        menuChoice = MenuGenerator.createGameMenu(prompt, true, newGame);
 
         while (!createGame) {
 
@@ -206,7 +203,7 @@ public class PlayerHandler implements Runnable {
 
                 case -1:
                     System.err.println("chose: " + menuChoice);
-                    if (!isAllSet(creatingGame)) {
+                    if (!isAllSet(newGame)) {
                         break;
                     }
                     createGame = true;
@@ -216,21 +213,21 @@ public class PlayerHandler implements Runnable {
                     return;
 
                 case 1:
-                    creatingGame.setName(setGameName());
+                    newGame.setName(setGameName());
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
-                            "Game name set to: " + creatingGame.getName() + creatingGame.toString());
+                            "Game name set to: " + newGame.getName() + newGame.toString());
                     break;
 
                 case 2:
-                    creatingGame.setNumMaxPlayers(setPlayerAmount());
+                    newGame.setNumMaxPlayers(setPlayerAmount());
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
-                            "Max players set to: " + creatingGame.getNumMaxPlayers() + creatingGame.toString());
+                            "Max players set to: " + newGame.getNumMaxPlayers() + newGame.toString());
                     break;
 
                 case 3:
-                    selectTeam(creatingGame);
+                    selectTeam(newGame);
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
-                            "Team colors set to: " + Arrays.toString(creatingGame.getTeams()) + creatingGame.toString());
+                            "Team colors set to: " + Arrays.toString(newGame.getTeams()) + newGame.toString());
                     break;
 
                 case 4:
@@ -239,15 +236,15 @@ public class PlayerHandler implements Runnable {
                         printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle());
                         break;
                     }
-                    creatingGame.setGameType(gameType);
+                    newGame.setGameType(gameType);
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
-                            "Game type set to: " + creatingGame.getGameType().toString() + creatingGame.toString());
+                            "Game type set to: " + newGame.getGameType().toString() + newGame.toString());
                     break;
 
                 case 5:
-                    creatingGame.setDifficulty(setGameDifficulty());
+                    newGame.setDifficulty(setGameDifficulty());
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() +
-                            "Game difficulty set to: " + creatingGame.getDifficulty() + creatingGame.toString());
+                            "Game difficulty set to: " + newGame.getDifficulty() + newGame.toString());
                     break;
                 case 6:
                     printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.generateInfoBox(Messages.createGameInstructions, TextAlign.LEFT));
@@ -255,19 +252,18 @@ public class PlayerHandler implements Runnable {
             }
 
             if (!createGame) {
-                menuChoice = MenuGenerator.createGameMenu(prompt, false, creatingGame);
+                menuChoice = MenuGenerator.createGameMenu(prompt, false, newGame);
             }
 
         }
 
-        creatingGame.setGameStats(creatingGame.getNumMaxPlayers());
-        creatingGame.setPlayers(creatingGame.getNumMaxPlayers());
-        Server.getGames().put(creatingGame.getName(), creatingGame);
+        newGame.setPlayers(newGame.getNumMaxPlayers());
+        Server.getGames().put(newGame.getName(), newGame);
 
     }
 
-    public boolean isAllSet(Game creatingGame) {
-        System.err.println("entered is all set" + creatingGame.toString());
+    private boolean isAllSet(Game creatingGame) {
+
         if (creatingGame.getName() == null) {
             printToPlayer.println(GFXGenerator.clearScreen() + GFXGenerator.drawGameTitle() + "Set game name!");
             return false;
@@ -369,7 +365,7 @@ public class PlayerHandler implements Runnable {
         }
     }
 
-    public synchronized void winGame() {
+    private synchronized void winGame() {
         // TODO: this assumes that first player belongs to one team and that de following player will always be from the other team
         printToPlayer.println(GFXGenerator.drawRope(game.getScore(), game.getPlayers()[0].getTeam(), game.getPlayers()[1].getTeam()));
         gameOver = true;
@@ -381,7 +377,7 @@ public class PlayerHandler implements Runnable {
     }
 
 
-    public void reset() {
+    private void reset() {
         correctAnswers = 0;
         team = null;
         game = null;

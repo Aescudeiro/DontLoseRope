@@ -79,12 +79,12 @@ public class GFXGenerator {
         String c = color;
 
             sb.append(c + "                  .d8888b.         d8888 888b     d888 8888888888       .d88888b.  888     888 8888888888 8888888b.\n");
-            sb.append(c + "                  d88P  Y88b       d88888 8888b   d8888 888             d88P\" \"Y88b 888     888 888        888   Y88b\n");
-            sb.append(c + "                  888    888      d88P888 88888b.d88888 888             888     888 888     888 888        888    888\n");
-            sb.append(c + "                  888            d88P 888 888Y88888P888 8888888         888     888 Y88b   d88P 8888888    888   d88P\n");
-            sb.append(c + "                  888  88888    d88P  888 888 Y888P 888 888             888     888  Y88b d88P  888        8888888P\"\n");
-            sb.append(c + "                  888    888   d88P   888 888  Y8P  888 888             888     888   Y88o88P   888        888 T88b\n");
-            sb.append(c + "                  Y88b  d88P  d8888888888 888   \"   888 888             Y88b. .d88P    Y888P    888        888  T88b\n");
+            sb.append(c + "                 d88P  Y88b       d88888 8888b   d8888 888             d88P\" \"Y88b 888     888 888        888   Y88b\n");
+            sb.append(c + "                 888    888      d88P888 88888b.d88888 888             888     888 888     888 888        888    888\n");
+            sb.append(c + "                 888            d88P 888 888Y88888P888 8888888         888     888 Y88b   d88P 8888888    888   d88P\n");
+            sb.append(c + "                 888  88888    d88P  888 888 Y888P 888 888             888     888  Y88b d88P  888        8888888P\"\n");
+            sb.append(c + "                 888    888   d88P   888 888  Y8P  888 888             888     888   Y88o88P   888        888 T88b\n");
+            sb.append(c + "                 Y88b  d88P  d8888888888 888   \"   888 888             Y88b. .d88P    Y888P    888        888  T88b\n");
             sb.append(c + "                  \"Y8888P88 d88P     888 888       888 8888888888       \"Y88888P\"      Y8P     8888888888 888   T88b\n");
 
         return CLEAR_SPACE + drawRope(score, t1, t2) + "\n\n" + sb.toString() + Color.ANSI_RESET;
@@ -308,10 +308,4 @@ public class GFXGenerator {
         return "Ops... Something went wrong. Unable to create this line";
     }
 
-
-    public static void main(String[] args) {
-        String[] test = {"rafa 0", "furnas 100", "karolis 0" };
-
-        System.out.println(drawTable(test, 4, null));
-    }
 }
