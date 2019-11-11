@@ -8,6 +8,7 @@ enum Edge { TOP, BOTTOM; }
 
 public class GFXGenerator {
 
+    private static final int MARGIN = 3;
     private static final int LINE_SIZE = 136;
     private static final String CLEAR_SPACE = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
             "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
@@ -196,6 +197,55 @@ public class GFXGenerator {
         s += Color.ANSI_RESET;
 
         return CLEAR_SPACE + s;
+    }
+
+    public static String drawTable(String[] cellContent, int cols, String title){
+
+        int lines = (int)Math.ceil((double)cellContent.length / cols);
+        int cellSize = (LINE_SIZE - MARGIN - MARGIN) / cols;
+        String rows = "";
+
+        int counter = 0;
+        String[] cells = new String[cols];
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(cellContent[counter] != null && (counter < (cols*lines - 1))){
+                    cells[j] = cellContent[counter];
+                } else {
+                    cells[j] = " ".repeat(cellSize);
+                }
+                counter++;
+
+            }
+            rows += generateBannerRow(cells);
+        }
+        String boxStart = bannerEdge(Edge.TOP);
+
+        if(title != null){
+            boxStart += generateBannerContentLine(title.toUpperCase(), TextAlign.CENTER) +
+                    generateBannerContentLine(" ", TextAlign.LEFT) +
+                    generateBannerContentLine("-".repeat(LINE_SIZE - 6), TextAlign.CENTER) +
+                    generateBannerContentLine(" ", TextAlign.LEFT);;
+        }
+
+        return  boxStart + rows + bannerEdge(Edge.BOTTOM);
+    }
+
+    private static String generateBannerRow(String[] content){
+
+        int cellSize = (LINE_SIZE - MARGIN - MARGIN) / content.length;
+        String stat = "";
+        String row = "";
+
+        for (int i = 0; i < content.length; i++) {
+            String fillCell = " ".repeat(cellSize - content[i].length());
+            stat += content[i] + fillCell;
+        }
+
+        row = " #" + " ".repeat(MARGIN - 1) + stat + " ".repeat(MARGIN - 1) + "#\n";
+
+        return row;
+
     }
 
     public static String generateInfoBox(String[] content, TextAlign align){
