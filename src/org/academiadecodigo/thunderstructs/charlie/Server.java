@@ -55,7 +55,9 @@ public class Server {
 
     public static Map<String, PlayerHandler> getPlayers() {
         return players;
-    }public static void main(String[] args) {
+    }
+
+    public static void main(String[] args) {
 
         try {
             Scanner input = new Scanner(System.in);

@@ -9,15 +9,15 @@ public class Messages {
             "playing! " + Color.ANSI_RESET + "[Press enter to go back to terminal]";
     public static final String MAIN_MENU = Color.ANSI_GREEN + "Main menu" + MENU_LINE + Color.ANSI_RESET;
     public static final String WELCOME = Color.ANSI_GREEN + "\nWELCOME PLAYER! " +
-            "Maximise your window for a better game experience \nPlease insert your name: " + Color.ANSI_RESET;
+            "Maximise your window for a better game experience \nPlease insert your name: " + Color.ANSI_RESET + "\n";
     public static final String JOIN_GAME = Color.ANSI_GREEN + "Choose a game type" + MENU_LINE + Color.ANSI_RESET;
     public static final String CREATE_MENU = Color.ANSI_GREEN + "Create Game Menu" + MENU_LINE + Color.ANSI_RESET;
     public static final String SELECT_TEAM = Color.ANSI_GREEN + "Select Team" + MENU_LINE + Color.ANSI_RESET;
     public static final String SET_TEAM_COLOR = Color.ANSI_GREEN + "Choose Team Color" + MENU_LINE + Color.ANSI_RESET;
     public static final String SET_GAME_TYPE = Color.ANSI_GREEN + "Choose Game Type" + MENU_LINE + Color.ANSI_RESET;
     public static final String SET_DIFFICULTY = Color.ANSI_GREEN + "Choose Game Difficulty" + MENU_LINE + Color.ANSI_RESET;
-    public static final String GAME_NAME = Color.ANSI_GREEN + "Please insert the game name: " + Color.ANSI_RESET;
-    public static final String SET_MAX_PLAYERS = Color.ANSI_GREEN + "Set max player number: " + Color.ANSI_RESET;
+    public static final String GAME_NAME = Color.ANSI_GREEN + "Please insert the game name: " + Color.ANSI_RESET + "\n";
+    public static final String SET_MAX_PLAYERS = Color.ANSI_GREEN + "Set max player number: " + Color.ANSI_RESET + "\n";
 
     public static final String[] gameInstructions = {
             "GAME INSTRUCTIONS",
